@@ -1,0 +1,47 @@
+[versions]
+exposed = "0.61.0"
+h2 = "2.3.232"
+kotlin = "2.2.20"
+ktor = "3.3.1"
+logback = "1.4.14"
+postgres = "42.7.8"
+elasticsearch = "9.0.1"
+jackson = "3.0.1"
+poi = "5.4.1"
+kotest = "6.0.7"
+
+[libraries]
+ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor" }
+postgresql = { module = "org.postgresql:postgresql", version.ref = "postgres" }
+h2 = { module = "com.h2database:h2", version.ref = "h2" }
+exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
+exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
+ktor-server-default-headers = { module = "io.ktor:ktor-server-default-headers", version.ref = "ktor" }
+ktor-server-cors = { module = "io.ktor:ktor-server-cors", version.ref = "ktor" }
+ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref="ktor" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref="ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref="ktor" }
+
+elasticsearch = { module = "co.elastic.clients:elasticsearch-java", version.ref = "elasticsearch" }
+
+jackson = { module = "tools.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
+
+poi = { module = "org.apache.poi:poi-ooxml", version.ref = "poi"}
+
+kotest = {module="io.kotest:kotest-assertions-core-jvm", version.ref="kotest"}
+kotest-runner = {module="io.kotest:kotest-runner-junit5-jvm", version.ref="kotest"}
+
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version = "1.10.1" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.8.0" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
+kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

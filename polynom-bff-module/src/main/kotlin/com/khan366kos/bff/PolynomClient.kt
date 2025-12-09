@@ -1,7 +1,10 @@
 package com.khan366kos.bff
 
+import com.khan366kos.bff.auth.AuthPlugin
+import com.khan366kos.bff.auth.TokenManager
 import io.ktor.client.*
 import io.ktor.client.call.*
+import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
@@ -19,23 +22,25 @@ class PolynomClient {
         private val BASE_URL = "http://$SERVER_HOST:$SERVER_PORT$BASE_API_PATH"
     }
 
-    val client = HttpClient {
+    private val tokenManager = TokenManager()
+
+    val client = HttpClient(CIO) {
         install(ContentNegotiation) {
             json()
         }
         install(DefaultRequest) {
             url(BASE_URL)
         }
-        // Common configuration can be added here
+        install(AuthPlugin) {
+            baseUrl = BASE_URL
+            tokenManager = this@PolynomClient.tokenManager
+        }
     }
 
     suspend inline fun <reified T> get(url: String): T {
         return client.get(url).body()
     }
 
-    /**
-     * Makes a POST request to the specified URL with the provided data and returns the response body
-     */
     suspend inline fun <reified T> post(url: String, data: Any): T {
         return client.post(url) {
             contentType(ContentType.Application.Json)

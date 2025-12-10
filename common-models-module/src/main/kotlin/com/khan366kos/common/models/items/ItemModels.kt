@@ -2,7 +2,6 @@ package com.khan366kos.common.models.items
 
 import com.khan366kos.common.models.Identifier
 import com.khan366kos.common.models.contracts.Contract
-import com.khan366kos.common.models.contracts.ContractProperty
 import com.khan366kos.common.models.simple.*
 import kotlinx.serialization.Serializable
 

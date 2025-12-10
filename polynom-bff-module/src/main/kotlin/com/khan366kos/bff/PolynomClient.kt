@@ -2,8 +2,8 @@ package com.khan366kos.bff
 
 import com.khan366kos.bff.auth.AuthPlugin
 import com.khan366kos.bff.auth.TokenManager
-import com.khan366kos.common.models.business.Element
-import com.khan366kos.common.models.data.PropertyOwner
+import com.khan366kos.common.responses.ElementResponse
+import com.khan366kos.common.responses.PropertyOwnerRespose
 import com.khan366kos.common.requests.CreateElementRequest
 import com.khan366kos.common.requests.PropertyOwnerRequest
 import io.ktor.client.*
@@ -16,7 +16,6 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.*
-import io.ktor.client.statement.bodyAsBytes
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.URLProtocol
@@ -65,13 +64,13 @@ class PolynomClient {
         return client.get("reference/all").bodyAsText()
     }
 
-    suspend fun element(request: CreateElementRequest): Element {
+    suspend fun element(request: CreateElementRequest): ElementResponse {
         return client.post("element") {
             setBody(request)
         }.body()
     }
 
-    suspend fun propertyOwner(request: PropertyOwnerRequest): PropertyOwner {
+    suspend fun propertyOwner(request: PropertyOwnerRequest): PropertyOwnerRespose {
         return client.post("property-owner/properties") {
             setBody(request.identifier)
         }.body()

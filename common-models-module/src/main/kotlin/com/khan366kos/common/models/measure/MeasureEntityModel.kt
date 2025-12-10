@@ -2,9 +2,7 @@ package com.khan366kos.common.models.measure
 
 import com.khan366kos.common.models.Identifier
 import com.khan366kos.common.models.simple.*
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
-import java.util.UUID
 
 @Serializable
 data class MeasureEntities(

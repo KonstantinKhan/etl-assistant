@@ -1,4 +1,4 @@
-package com.khan366kos.common.models.data
+package com.khan366kos.common.responses
 
 import com.khan366kos.common.models.contracts.Contract
 import com.khan366kos.common.models.definitions.Definitions
@@ -9,7 +9,7 @@ import com.khan366kos.common.models.values.Values
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PropertyOwner(
+data class PropertyOwnerRespose(
     val contracts: List<Contract>,
     val definitions: Definitions,
     val measureEntities: MeasureEntities,

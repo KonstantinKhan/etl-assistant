@@ -6,14 +6,10 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * A simple console application that demonstrates using the SimpleBffClient to call external APIs
- */
 fun main() = runBlocking {
     val polynomClient: PolynomClient = createSimpleBffClient()
 
     try {
-        // Example API call to a public API using the simple client
         val response: PostmanEchoGetResponse = polynomClient.get("https://postman-echo.com/get?foo1=bar1&foo2=bar2")
 
         println("Status: ${response.args}")

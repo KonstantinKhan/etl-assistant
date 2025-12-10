@@ -22,19 +22,15 @@ class TokenManager {
     }
 
     suspend fun getValidToken(httpClient: HttpClient, baseUrl: String): String {
-        // Fast path: token is valid
         if (!needsRefresh()) {
             return tokenData.get()?.accessToken ?: error("Token unexpectedly null")
         }
 
-        // Slow path: need to refresh - use mutex to coordinate
         authMutex.withLock {
-            // Double-check: another coroutine might have refreshed while waiting
             if (!needsRefresh()) {
                 return tokenData.get()?.accessToken ?: error("Token unexpectedly null")
             }
 
-            // Perform authentication
             performAuthentication(httpClient, baseUrl)
             return tokenData.get()?.accessToken ?: error("Authentication failed")
         }

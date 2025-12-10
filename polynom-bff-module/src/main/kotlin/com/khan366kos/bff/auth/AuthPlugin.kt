@@ -1,8 +1,6 @@
 package com.khan366kos.bff.auth
 
-import io.ktor.client.*
 import io.ktor.client.plugins.api.*
-import io.ktor.client.request.*
 import io.ktor.http.*
 
 class AuthPluginConfig {
@@ -15,22 +13,27 @@ val AuthPlugin = createClientPlugin("AuthPlugin", ::AuthPluginConfig) {
     val baseUrl = pluginConfig.baseUrl
 
     on(Send) { request ->
-        val token = tokenManager.getValidToken(client, baseUrl)
+        if (!request.url.toString().contains("login/sign-in")) {
 
-        request.headers.append(HttpHeaders.Authorization, "Bearer $token")
+            val token = tokenManager.getValidToken(client, baseUrl)
 
-        val originalCall = proceed(request)
+            request.headers.append(HttpHeaders.Authorization, "Bearer $token")
 
-        if (originalCall.response.status == HttpStatusCode.Unauthorized) {
-            tokenManager.authenticate(client, baseUrl)
-            val newToken = tokenManager.getValidToken(client, baseUrl)
+            val originalCall = proceed(request)
 
-            request.headers.remove(HttpHeaders.Authorization)
-            request.headers.append(HttpHeaders.Authorization, "Bearer $newToken")
+            if (originalCall.response.status == HttpStatusCode.Unauthorized) {
+                tokenManager.authenticate(client, baseUrl)
+                val newToken = tokenManager.getValidToken(client, baseUrl)
 
-            proceed(request)
+                request.headers.remove(HttpHeaders.Authorization)
+                request.headers.append(HttpHeaders.Authorization, "Bearer $newToken")
+
+                proceed(request)
+            } else {
+                originalCall
+            }
         } else {
-            originalCall
+            proceed(request)
         }
     }
 }

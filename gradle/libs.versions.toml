@@ -41,6 +41,8 @@ kotest-runner = {module="io.kotest:kotest-runner-junit5-jvm", version.ref="kotes
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version = "1.10.1" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.8.0" }
 
+logging = { module = "io.ktor:ktor-client-logging", version.ref="ktor"}
+
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }

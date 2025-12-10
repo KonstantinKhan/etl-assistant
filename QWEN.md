@@ -13,6 +13,6 @@
 To build or run the project, use one of the following tasks:
 | Task | Description |
 |-------------------|------------------|
-| `./gradlew test`  | Run the tests |
-| `./gradlew build` | Build everything |
-| `./gradlew run`   | Run the server |
+| `./gradlew.bat test`  | Run the tests |
+| `./gradlew.bat build` | Build everything |
+| `./gradlew.bat run`   | Run the server |

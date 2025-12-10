@@ -18,10 +18,10 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.logback.classic)
 
-    // Standard Kotlin libraries
     implementation(kotlin("stdlib"))
 
-    // Test dependencies
+    implementation(libs.logging)
+
     testImplementation(libs.kotest)
     testImplementation(libs.kotest.runner)
 }

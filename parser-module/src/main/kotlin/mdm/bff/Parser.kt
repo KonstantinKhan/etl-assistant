@@ -534,6 +534,38 @@ class Parser {
             return ""
         }
 
+        // Check if the potential coating code might be a strength grade in the context
+        // If the text matches a strength grade and there's no additional text after it before ГОСТ
+        // that would indicate a material (which typically follows strength grade),
+        // then it's more likely to be a strength grade rather than a coating code
+        if (STRENGTH_GRADE_MAP.containsKey(coatingText)) {
+            // Count total dots between the -6gx/-6g marker and the ГОСТ
+            var markerIndex = input.indexOf("-6gx")
+            var marker = "-6gx"
+
+            // If "-6gx" is not found, try "-6g"
+            if (markerIndex == -1) {
+                markerIndex = input.indexOf("-6g")
+                marker = "-6g"
+            }
+
+            if (markerIndex != -1) {
+                val afterMarkerStart = markerIndex + marker.length
+                if (afterMarkerStart < gostIndex) {
+                    val contentBetweenMarkerAndGost = input.substring(afterMarkerStart, gostIndex)
+                    val totalDotsCount = contentBetweenMarkerAndGost.count { it == '.' }
+
+                    // If total dots count is 1 (format like "length.strength_grade"),
+                    // and the potential code is a valid strength grade, it's likely a strength grade
+                    // For example: "Болт М5-6gx12.24 ГОСТ 7805-70" has format length.strength_grade
+                    if (totalDotsCount == 1) {
+                        // Format is likely "length.potential_strength_grade", treat as strength grade
+                        return ""
+                    }
+                }
+            }
+        }
+
         // Возвращаем полный код покрытия
         return coatingText
     }

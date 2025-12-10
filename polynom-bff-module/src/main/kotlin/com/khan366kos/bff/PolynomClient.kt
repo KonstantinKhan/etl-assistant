@@ -13,6 +13,7 @@ import io.ktor.client.*
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
@@ -60,6 +61,9 @@ class PolynomClient {
         install(Logging) {
             logger = Logger.DEFAULT
             level = LogLevel.HEADERS
+        }
+        install(HttpTimeout) {
+            requestTimeoutMillis = 30_000
         }
     }
 

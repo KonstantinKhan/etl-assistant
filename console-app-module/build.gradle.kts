@@ -17,10 +17,12 @@ dependencies {
     implementation(projects.commonModelsModule)
     implementation(projects.polynomBffModule)
     implementation(projects.parserModule)
+    implementation(projects.excelModule)
 
     implementation(libs.kotlinx.coroutines.core)
 
     implementation(libs.kotlinx.serialization.json)
+
 
 
     testImplementation(libs.kotest)

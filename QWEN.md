@@ -3,6 +3,7 @@
 ## Dependencies
 
 - Use dependencies from [libs.versions.toml](gradle/libs.versions.toml)
+- Use projects.{module_name} for include dependencies
 
 ## Testing
 

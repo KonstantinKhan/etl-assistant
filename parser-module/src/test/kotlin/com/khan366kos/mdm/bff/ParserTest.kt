@@ -39,4 +39,13 @@ class ParserTest : ShouldSpec({
 
         result shouldBe expectedOutput
     }
+
+    should("parse bolt Болт М5-6gx12.24 ГОСТ 7805-70") {
+        val parser = Parser()
+        val input = "Болт М5-6gx12.24 ГОСТ 7805-70"
+        val expectedOutput = "[Нет;Без покрытия;Без указания материала;12;5;8;0,8;24]"
+        val result = parser.parsePartData(input).toFormattedString()
+
+        result shouldBe expectedOutput
+    }
 })

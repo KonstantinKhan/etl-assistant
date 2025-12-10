@@ -6,6 +6,7 @@ include("web-module")
 include("console-app-module")
 include("polynom-bff-module")
 include("common-models-module")
+include("excel-module")
 
 dependencyResolutionManagement {
     repositories {

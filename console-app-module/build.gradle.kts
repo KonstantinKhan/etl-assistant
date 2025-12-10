@@ -12,18 +12,16 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":polynom-bff-module"))
-
-    // Coroutines for runBlocking
-    implementation(libs.kotlinx.coroutines.core)
-
-    // Serialization for @Serializable annotation
-    implementation(libs.kotlinx.serialization.json)
-
-    // Standard Kotlin libraries
     implementation(kotlin("stdlib"))
 
-    // Test dependencies
+    implementation(projects.commonModelsModule)
+    implementation(projects.polynomBffModule)
+
+    implementation(libs.kotlinx.coroutines.core)
+
+    implementation(libs.kotlinx.serialization.json)
+
+
     testImplementation(libs.kotest)
     testImplementation(libs.kotest.runner)
 }

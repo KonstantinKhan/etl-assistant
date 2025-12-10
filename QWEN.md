@@ -16,3 +16,7 @@ To build or run the project, use one of the following tasks:
 | `./gradlew.bat test`  | Run the tests |
 | `./gradlew.bat build` | Build everything |
 | `./gradlew.bat run`   | Run the server |
+
+## Developmnet conventions
+- All simple fields should be value classes.
+- All business models should be data classes.

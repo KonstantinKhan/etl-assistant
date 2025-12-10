@@ -1,6 +1,6 @@
 package com.khan366kos.excel.handler
 
-import com.khan366kos.models.Item
+import com.khan366kos.common.models.Item
 import org.apache.poi.ss.usermodel.Row
 
 class RowHandler() {

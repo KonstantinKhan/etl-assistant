@@ -1,4 +1,4 @@
-package com.khan366kos.models
+package com.khan366kos.common.models
 
 data class Item(
     val itemId: String,

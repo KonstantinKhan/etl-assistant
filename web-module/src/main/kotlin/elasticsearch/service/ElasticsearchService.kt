@@ -2,7 +2,7 @@ package com.khan366kos.elasticsearch.service
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse
-import com.khan366kos.models.Item
+import com.khan366kos.common.models.Item
 import org.apache.hc.core5.ssl.SSLContexts
 import tools.jackson.module.kotlin.jacksonObjectMapper
 

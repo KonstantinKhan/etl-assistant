@@ -2,7 +2,10 @@ package com.khan366kos.bff
 
 import com.khan366kos.bff.auth.AuthPlugin
 import com.khan366kos.bff.auth.TokenManager
+import com.khan366kos.common.models.business.Element
+import com.khan366kos.common.requests.CreateElementRequest
 import io.ktor.client.*
+import io.ktor.client.call.body
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.contentnegotiation.*
@@ -12,7 +15,10 @@ import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.*
 import io.ktor.client.statement.bodyAsText
+import io.ktor.http.ContentType
 import io.ktor.http.URLProtocol
+import io.ktor.http.contentType
+import io.ktor.http.path
 import io.ktor.serialization.kotlinx.json.*
 
 
@@ -38,7 +44,9 @@ class PolynomClient {
                 protocol = URLProtocol.HTTP
                 host = SERVER_HOST
                 port = SERVER_PORT.toInt()
+                path("$BASE_API_PATH/")
             }
+            contentType(ContentType.Application.Json)
         }
         install(AuthPlugin) {
             baseUrl = "$BASE_URL$BASE_API_PATH"
@@ -51,7 +59,13 @@ class PolynomClient {
     }
 
     suspend fun allReference(): String {
-        return client.get("$BASE_API_PATH/reference/all").bodyAsText()
+        return client.get("reference/all").bodyAsText()
+    }
+
+    suspend fun element(request: CreateElementRequest): Element {
+        return client.post("element") {
+            setBody(request)
+        }.body()
     }
 
     fun close() {

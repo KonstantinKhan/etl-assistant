@@ -22,6 +22,9 @@ dependencies {
 
     implementation(libs.logging)
 
+    implementation(projects.commonModelsModule)
+
+
     testImplementation(libs.kotest)
     testImplementation(libs.kotest.runner)
 }

@@ -1,8 +1,6 @@
 package com.khan366kos
 
-import com.khan366kos.elasticsearch.service.ElasticsearchService
 import com.khan366kos.excel.handler.ExcelHandler
-import com.khan366kos.models.Item
 
 fun main(args: Array<String>) {
 //    val service = ElasticsearchService()

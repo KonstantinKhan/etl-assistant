@@ -20,3 +20,4 @@ To build or run the project, use one of the following tasks:
 ## Developmnet conventions
 - All simple fields should be value classes.
 - All business models should be data classes.
+- Each business object, request or response should be in a separate data class.

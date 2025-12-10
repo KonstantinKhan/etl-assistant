@@ -16,7 +16,9 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.coroutines.core)
-    
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.8.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0-RC.2")
+
     testImplementation(libs.kotest)
     testImplementation(libs.kotest.runner)
 }

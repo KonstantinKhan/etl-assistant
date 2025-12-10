@@ -2,9 +2,12 @@ package com.khan366kos.bff
 
 import com.khan366kos.bff.auth.AuthPlugin
 import com.khan366kos.bff.auth.TokenManager
+import com.khan366kos.common.models.business.ObjectInfo
+import com.khan366kos.common.models.simple.GroupId
 import com.khan366kos.common.responses.ElementResponse
 import com.khan366kos.common.responses.PropertyOwnerRespose
 import com.khan366kos.common.requests.CreateElementRequest
+import com.khan366kos.common.requests.PropertyAssignmentRequest
 import com.khan366kos.common.requests.PropertyOwnerRequest
 import io.ktor.client.*
 import io.ktor.client.call.body
@@ -73,6 +76,18 @@ class PolynomClient {
     suspend fun propertyOwner(request: PropertyOwnerRequest): PropertyOwnerRespose {
         return client.post("property-owner/properties") {
             setBody(request.identifier)
+        }.body()
+    }
+
+    suspend fun setPropertyValues(request: PropertyAssignmentRequest): String {
+        return client.put("property-owner/set-property-values") {
+            setBody(request)
+        }.bodyAsText()
+    }
+
+    suspend fun elementByGroup(groupId: GroupId): List<ObjectInfo> {
+        return client.get("element/by-element-group") {
+            parameter("elementGroupId", groupId.groupId)
         }.body()
     }
 

@@ -1,6 +1,6 @@
 package com.khan366kos.common.models.definitions
 
-import com.khan366kos.common.models.Identifier
+import com.khan366kos.common.models.business.Identifier
 import com.khan366kos.common.models.simple.*
 import kotlinx.serialization.Serializable
 

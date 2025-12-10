@@ -1,7 +1,7 @@
 package com.khan366kos.mdm.bff
 
-import com.khan366kos.mdm.bff.partlib.CoatingCondition
-import com.khan366kos.mdm.bff.partlib.Material
+import mdm.bff.partlib.CoatingCondition
+import mdm.bff.partlib.Material
 import com.khan366kos.mdm.bff.partlib.PartData
 import com.khan366kos.mdm.bff.partlib.ThreadPitch
 import com.khan366kos.mdm.bff.partlib.ThreadWrenchSize

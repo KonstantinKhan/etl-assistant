@@ -4,4 +4,8 @@ import kotlinx.serialization.Serializable
 
 @JvmInline
 @Serializable
-value class GroupId(val groupId: Int)
+value class GroupId(val groupId: Int) {
+    companion object {
+        val NONE = GroupId(0)
+    }
+}

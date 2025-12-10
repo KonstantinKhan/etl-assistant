@@ -1,29 +1,29 @@
 package com.khan366kos.common.models.values
 
-import com.khan366kos.common.models.Identifier
+import com.khan366kos.common.models.business.Identifier
 import com.khan366kos.common.models.simple.*
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Values(
-    val doubleProperties: List<DoublePropertyValues>,
-    val stringProperties: List<StringPropertyValues>,
-    val booleanProperties: List<BooleanPropertyValues>,
-    val colorProperties: List<ColorPropertyValues>,
-    val opticProperties: List<OpticPropertyValues>,
-    val dateTimeProperties: List<DateTimePropertyValues>,
-    val imageProperties: List<ImagePropertyValues>,
-    val rtfProperties: List<RtfPropertyValues>,
-    val enumProperties: List<EnumPropertyValues>,
-    val setProperties: List<SetPropertyValues>,
-    val integerProperties: List<IntegerPropertyValues>,
-    val binaryProperties: List<BinaryPropertyValues>,
-    val guidProperties: List<GuidPropertyValues>,
-    val enumBoolProperties: List<EnumBoolPropertyValues>,
-    val enumDoubleProperties: List<EnumDoublePropertyValues>,
-    val enumIntProperties: List<EnumIntPropertyValues>,
-    val enumStringProperties: List<EnumStringPropertyValues>,
-    val tableProperties: List<TablePropertyValues>
+    val doubleProperties: List<DoublePropertyValues> = emptyList(),
+    val stringProperties: List<StringPropertyValues> = emptyList(),
+    val booleanProperties: List<BooleanPropertyValues> = emptyList(),
+    val colorProperties: List<ColorPropertyValues> = emptyList(),
+    val opticProperties: List<OpticPropertyValues> = emptyList(),
+    val dateTimeProperties: List<DateTimePropertyValues> = emptyList(),
+    val imageProperties: List<ImagePropertyValues> = emptyList(),
+    val rtfProperties: List<RtfPropertyValues> = emptyList(),
+    val enumProperties: List<EnumPropertyValues> = emptyList(),
+    val setProperties: List<SetPropertyValues> = emptyList(),
+    val integerProperties: List<IntegerPropertyValues> = emptyList(),
+    val binaryProperties: List<BinaryPropertyValues> = emptyList(),
+    val guidProperties: List<GuidPropertyValues> = emptyList(),
+    val enumBoolProperties: List<EnumBoolPropertyValues> = emptyList(),
+    val enumDoubleProperties: List<EnumDoublePropertyValues> = emptyList(),
+    val enumIntProperties: List<EnumIntPropertyValues> = emptyList(),
+    val enumStringProperties: List<EnumStringPropertyValues> = emptyList(),
+    val tableProperties: List<TablePropertyValues> = emptyList()
 )
 
 @Serializable

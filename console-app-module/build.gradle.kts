@@ -16,6 +16,7 @@ dependencies {
 
     implementation(projects.commonModelsModule)
     implementation(projects.polynomBffModule)
+    implementation(projects.parserModule)
 
     implementation(libs.kotlinx.coroutines.core)
 

@@ -1,4 +1,4 @@
-package com.khan366kos.mdm.bff.partlib
+package mdm.bff.partlib
 
 object CoatingCondition {
     private val coatingMap = mapOf(

@@ -1,7 +1,7 @@
 package com.khan366kos.common.models.contracts
 
+import com.khan366kos.common.models.business.Identifier
 import com.khan366kos.common.models.simple.*
-import com.khan366kos.common.models.Identifier
 import kotlinx.serialization.Serializable
 
 @Serializable

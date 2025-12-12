@@ -3,11 +3,11 @@ exposed = "0.61.0"
 h2 = "2.3.232"
 kotlin = "2.2.20"
 ktor = "3.3.1"
-logback = "1.4.14"
+logback = "1.5.22"
 postgres = "42.7.8"
 elasticsearch = "9.0.1"
 jackson = "3.0.1"
-poi = "5.4.1"
+poi = "5.5.1"
 kotest = "6.0.7"
 
 [libraries]

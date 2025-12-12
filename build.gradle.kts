@@ -1,8 +1,5 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.ktor)
-    alias(libs.plugins.kotlin.plugin.serialization)
-    id("application") // Add application plugin for main executable
+    alias(libs.plugins.kotlin.jvm) apply false
 }
 
 group = "com.khan366kos"
@@ -12,25 +9,11 @@ repositories {
     mavenCentral()
 }
 
-// Common configurations for all subprojects
 subprojects {
-    apply(plugin = "org.jetbrains.kotlin.jvm")
-    apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
+    group = rootProject.group
+    version = rootProject.version
 
     repositories {
         mavenCentral()
     }
-
-    tasks.test {
-        useJUnitPlatform()
-    }
-
-    kotlin {
-        jvmToolchain(21)
-    }
-}
-
-// Configuration for the root project if needed
-application {
-    mainClass = "io.ktor.server.netty.EngineMain"
 }

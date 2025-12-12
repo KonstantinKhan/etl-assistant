@@ -42,10 +42,8 @@ fun getFileFromInput(): String? {
 }
 
 fun extractAndFilterBolts(excelHandler: ExcelHandler, filePath: String): Array<String> {
-    // Get all values from the 4th column (index 3), excluding the header
     val columnValues = excelHandler.getColumnData(filePath, 3) // 4th column has index 3
 
-    // Filter values that start with "Болт М" and end with "ГОСТ 7805-70"
     val filteredValues = columnValues.filter { value ->
         value.trim().startsWith("Болт М") && value.trim().endsWith("ГОСТ 7805-70")
     }

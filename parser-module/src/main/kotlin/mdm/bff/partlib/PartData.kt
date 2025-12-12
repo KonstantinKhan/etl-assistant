@@ -11,7 +11,7 @@ data class PartData(
     val strengthGrade: String
 ) {
     fun toFormattedString(): String {
-        val materialDisplay = if (material.isEmpty()) "Без указания материала" else material
+        val materialDisplay = material.ifEmpty { "Без указания материала" }
         return "[$coatingThickness;$coating;$materialDisplay;$length;$threadDiameter;$wrenchSize;$threadPitch;$strengthGrade]"
     }
 }

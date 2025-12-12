@@ -52,7 +52,7 @@ class Parser {
         val wrenchSize = extractWrenchSize(input, threadDiameter)
         val threadPitch = extractThreadPitch(input, threadDiameter)
 
-        return PartData(
+        val partData = PartData(
             coatingThickness = coatingThickness,
             coating = coating,
             material = material,
@@ -62,15 +62,12 @@ class Parser {
             threadPitch = threadPitch,
             strengthGrade = strengthGrade
         )
+
+        println("$input -> ${partData.toFormattedString()}")
+
+        return partData
     }
 
-    /**
-     * Извлечение группы точности из строки описания.
-     *
-     * Проверяет, есть ли кандидат в словаре STRENGTH_GRADE_MAP.
-     * Если есть, то трансформировать по правилам словаря и записать в значение поля.
-     * Если кандидата нет, то в значение группы прочности записать `-`
-     */
     private fun extractStrengthGrade(input: String): String {
         val defaultStrengthGrade = "-"
 
@@ -90,7 +87,8 @@ class Parser {
 
             // Skip the 'x' or 'х' character if it follows the marker immediately
             if (startIndex < input.length && (input[startIndex] == 'x' || input[startIndex] == 'X' ||
-                                              input[startIndex] == 'х' || input[startIndex] == 'Х')) {
+                        input[startIndex] == 'х' || input[startIndex] == 'Х')
+            ) {
                 startIndex++
                 if (startIndex >= input.length) return defaultStrengthGrade
             }
@@ -136,7 +134,8 @@ class Parser {
             // Find the end of the thread diameter number (find where the number ends)
             var afterDiameterIndex = mIndex + 1
             while (afterDiameterIndex < input.length &&
-                   (input[afterDiameterIndex].isDigit() || input[afterDiameterIndex] == '.' || input[afterDiameterIndex] == ',')) {
+                (input[afterDiameterIndex].isDigit() || input[afterDiameterIndex] == '.' || input[afterDiameterIndex] == ',')
+            ) {
                 afterDiameterIndex++
             }
 
@@ -144,7 +143,8 @@ class Parser {
 
             // Look for 'х' or 'x' after the thread diameter number
             if (input[afterDiameterIndex] == 'х' || input[afterDiameterIndex] == 'х' ||
-                input[afterDiameterIndex] == 'x' || input[afterDiameterIndex] == 'X') {
+                input[afterDiameterIndex] == 'x' || input[afterDiameterIndex] == 'X'
+            ) {
 
                 var afterXIndex = afterDiameterIndex + 1
                 if (afterXIndex >= input.length) return defaultStrengthGrade
@@ -196,7 +196,8 @@ class Parser {
 
             // Skip the 'x' or 'х' character if it follows the marker immediately
             if (startIndex < input.length && (input[startIndex] == 'x' || input[startIndex] == 'X' ||
-                                              input[startIndex] == 'х' || input[startIndex] == 'Х')) {
+                        input[startIndex] == 'х' || input[startIndex] == 'Х')
+            ) {
                 startIndex++
                 if (startIndex >= input.length) return defaultLength
             }
@@ -232,7 +233,8 @@ class Parser {
             // Find the end of the thread diameter number (find where the number ends)
             var afterDiameterIndex = mIndex + 1
             while (afterDiameterIndex < input.length &&
-                   (input[afterDiameterIndex].isDigit() || input[afterDiameterIndex] == '.' || input[afterDiameterIndex] == ',')) {
+                (input[afterDiameterIndex].isDigit() || input[afterDiameterIndex] == '.' || input[afterDiameterIndex] == ',')
+            ) {
                 afterDiameterIndex++
             }
 
@@ -240,7 +242,8 @@ class Parser {
 
             // Look for 'х' or 'x' after the thread diameter number
             if (input[afterDiameterIndex] == 'х' || input[afterDiameterIndex] == 'х' ||
-                input[afterDiameterIndex] == 'x' || input[afterDiameterIndex] == 'X') {
+                input[afterDiameterIndex] == 'x' || input[afterDiameterIndex] == 'X'
+            ) {
 
                 var startIndex = afterDiameterIndex + 1
                 if (startIndex >= input.length) return defaultLength
@@ -282,7 +285,8 @@ class Parser {
 
             // Skip the 'x' or 'х' character if it follows the marker immediately
             if (startIndex < input.length && (input[startIndex] == 'x' || input[startIndex] == 'X' ||
-                                              input[startIndex] == 'х' || input[startIndex] == 'Х')) {
+                        input[startIndex] == 'х' || input[startIndex] == 'Х')
+            ) {
                 startIndex++
                 if (startIndex >= input.length) return defaultMaterial
             }
@@ -305,14 +309,16 @@ class Parser {
             }
 
             // Get the value after the first dot to determine format
-            val endIndexAfterFirst = if (secondDotIndex != -1 && secondDotIndex < gostIndex) secondDotIndex else gostIndex
+            val endIndexAfterFirst =
+                if (secondDotIndex != -1 && secondDotIndex < gostIndex) secondDotIndex else gostIndex
             val potentialStrengthGrade = input.substring(firstDotEndIndex, endIndexAfterFirst).trim()
 
             // Check if the first value after dot is a valid strength grade
             if (STRENGTH_GRADE_MAP.containsKey(potentialStrengthGrade)) {
                 // Format is likely "length.strengthGrade.material[.coating]" - extract material after second dot
                 val thirdDotIndex = input.indexOf('.', secondDotIndex + 1)
-                val materialEndIndex = if (thirdDotIndex != -1 && thirdDotIndex < gostIndex) thirdDotIndex else gostIndex
+                val materialEndIndex =
+                    if (thirdDotIndex != -1 && thirdDotIndex < gostIndex) thirdDotIndex else gostIndex
                 val candidate = input.substring(secondDotIndex + 1, materialEndIndex).trim()
 
                 if (candidate.isEmpty()) {
@@ -349,7 +355,8 @@ class Parser {
             // Find the end of the thread diameter number (find where the number ends)
             var afterDiameterIndex = mIndex + 1
             while (afterDiameterIndex < input.length &&
-                   (input[afterDiameterIndex].isDigit() || input[afterDiameterIndex] == '.' || input[afterDiameterIndex] == ',')) {
+                (input[afterDiameterIndex].isDigit() || input[afterDiameterIndex] == '.' || input[afterDiameterIndex] == ',')
+            ) {
                 afterDiameterIndex++
             }
 
@@ -357,7 +364,8 @@ class Parser {
 
             // Look for 'х' or 'x' after the thread diameter number
             if (input[afterDiameterIndex] == 'х' || input[afterDiameterIndex] == 'х' ||
-                input[afterDiameterIndex] == 'x' || input[afterDiameterIndex] == 'X') {
+                input[afterDiameterIndex] == 'x' || input[afterDiameterIndex] == 'X'
+            ) {
 
                 var afterXIndex = afterDiameterIndex + 1
                 if (afterXIndex >= input.length) return defaultMaterial
@@ -380,14 +388,16 @@ class Parser {
                 }
 
                 // Get the value after the first dot to determine format
-                val endIndexAfterFirst = if (secondDotIndex != -1 && secondDotIndex < gostIndex) secondDotIndex else gostIndex
+                val endIndexAfterFirst =
+                    if (secondDotIndex != -1 && secondDotIndex < gostIndex) secondDotIndex else gostIndex
                 val potentialStrengthGrade = input.substring(firstDotEndIndex, endIndexAfterFirst).trim()
 
                 // Check if the first value after dot is a valid strength grade
                 if (STRENGTH_GRADE_MAP.containsKey(potentialStrengthGrade)) {
                     // Format is likely "length.strengthGrade.material[.coating]" - extract material after second dot
                     val thirdDotIndex = input.indexOf('.', secondDotIndex + 1)
-                    val materialEndIndex = if (thirdDotIndex != -1 && thirdDotIndex < gostIndex) thirdDotIndex else gostIndex
+                    val materialEndIndex =
+                        if (thirdDotIndex != -1 && thirdDotIndex < gostIndex) thirdDotIndex else gostIndex
                     val candidate = input.substring(secondDotIndex + 1, materialEndIndex).trim()
 
                     if (candidate.isEmpty()) {
@@ -438,7 +448,8 @@ class Parser {
 
             // Skip the 'x' or 'х' character if it follows the marker immediately
             if (startIndex < input.length && (input[startIndex] == 'x' || input[startIndex] == 'X' ||
-                                              input[startIndex] == 'х' || input[startIndex] == 'Х')) {
+                        input[startIndex] == 'х' || input[startIndex] == 'Х')
+            ) {
                 startIndex++
                 if (startIndex >= input.length) return -1
             }
@@ -479,7 +490,8 @@ class Parser {
             // Find the end of the thread diameter number (find where the number ends)
             var afterDiameterIndex = mIndex + 1
             while (afterDiameterIndex < input.length &&
-                   (input[afterDiameterIndex].isDigit() || input[afterDiameterIndex] == '.' || input[afterDiameterIndex] == ',')) {
+                (input[afterDiameterIndex].isDigit() || input[afterDiameterIndex] == '.' || input[afterDiameterIndex] == ',')
+            ) {
                 afterDiameterIndex++
             }
 
@@ -487,7 +499,8 @@ class Parser {
 
             // Look for 'х' or 'x' after the thread diameter number
             if (input[afterDiameterIndex] == 'х' || input[afterDiameterIndex] == 'х' ||
-                input[afterDiameterIndex] == 'x' || input[afterDiameterIndex] == 'X') {
+                input[afterDiameterIndex] == 'x' || input[afterDiameterIndex] == 'X'
+            ) {
 
                 var afterXIndex = afterDiameterIndex + 1
                 if (afterXIndex >= input.length) return -1
@@ -570,12 +583,6 @@ class Parser {
         return coatingText
     }
 
-    /**
-     * Извлечение диаметра резьбы из строки описания.
-     *
-     * Ожидается формат вида "М10" / "M10" (латинская или кириллическая М) перед остальной частью обозначения.
-     * Если диаметр не найден, возвращается значение-заглушка "1,6".
-     */
     private fun extractThreadDiameter(input: String): String {
         // Ищем первое вхождение M/М + число (возможна запись с запятой/точкой)
         val pattern = """[MmМм]\s*([0-9]+(?:[.,][0-9]+)?)""".toRegex()
@@ -584,14 +591,7 @@ class Parser {
         return if (diameter.isNotEmpty()) diameter else "1,6"
     }
 
-    /**
-     * Извлечение размера «под ключ» из строки описания.
-     *
-     * 1. Если непосредственно перед подстрокой "ГОСТ 7805-70" есть значение в круглых скобках,
-     *    используется оно (после удаления всех буквенных символов).
-     * 2. Если подходящего значения в скобках нет, используется значение по умолчанию
-     *    из справочника ThreadWrenchSize в зависимости от диаметра резьбы.
-     */
+
     private fun extractWrenchSize(input: String, threadDiameter: String): String {
         // Пытаемся найти значение в круглых скобках непосредственно перед "ГОСТ 7805-70"
         val parenthesesPattern = "\\(([^)]*?)\\)\\s*ГОСТ 7805-70".toRegex()
@@ -611,14 +611,6 @@ class Parser {
         return ThreadWrenchSize.getWrenchSizeByDiameter(normalizedDiameter)
     }
 
-    /**
-     * Извлечение шага резьбы из строки описания.
-     *
-     * 1. Если после указания диаметра есть символ `x` и числовое значение после него,
-     *    и это значение находится до маркера "-6g", используется это значение.
-     * 2. Если подходящего значения нет, используется значение по умолчанию
-     *    из справочника ThreadPitch в зависимости от диаметра резьбы.
-     */
     private fun extractThreadPitch(input: String, threadDiameter: String): String {
         // Находим позицию диаметра резьбы (M/М + число)
         val diameterPattern = """[MmМм]\s*([0-9]+(?:[.,][0-9]+)?)""".toRegex()
@@ -630,7 +622,7 @@ class Parser {
         // Ищем маркер класса точности резьбы "-6g" или "-6gx" после диаметра
         val precisionMarker = "-6g"
         val precisionMarkerIndex = input.indexOf(precisionMarker, diameterEndIndex)
-        
+
         // Определяем границу поиска: до маркера "-6g" или до конца строки, если маркер не найден
         val searchEndIndex = if (precisionMarkerIndex != -1) {
             precisionMarkerIndex
@@ -650,7 +642,7 @@ class Parser {
         // Извлекаем числовое значение: цифры, точка/запятая, цифры
         val numberPattern = """([0-9]+(?:[.,][0-9]+)?)""".toRegex()
         val numberMatch = numberPattern.find(input, startIndex)
-        
+
         if (numberMatch != null) {
             val numberEndIndex = numberMatch.range.last + 1
             // Проверяем, что число находится до маркера "-6g"

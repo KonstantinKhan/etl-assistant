@@ -13,12 +13,13 @@ repositories {
 }
 
 dependencies {
-    // Add dependencies needed for the parser
     implementation(kotlin("stdlib"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation("org.apache.poi:poi:5.2.5")
     implementation("org.apache.poi:poi-ooxml:5.2.5")
+
+    implementation(projects.loggingModule)
 
     testImplementation(libs.kotest)
     testImplementation(libs.kotest.runner)

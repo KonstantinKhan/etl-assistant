@@ -13,10 +13,13 @@ import com.khan366kos.common.models.values.Values
 import com.khan366kos.common.requests.CreateElementRequest
 import com.khan366kos.common.requests.PropertyAssignmentRequest
 import com.khan366kos.common.requests.PropertyValueAssignment
+import com.khan366kos.etlassistant.logging.LogbackLogger
 import com.khan366kos.mdm.bff.Parser
 import khan366kos.excel.handler.ExcelHandler
 import kotlinx.coroutines.runBlocking
 import java.io.File
+
+val logger = LogbackLogger("console logger")
 
 fun getFileFromInput(): String? {
     print("Введите путь к Excel файлу: ")
@@ -56,18 +59,21 @@ suspend fun processBoltSpecifications(polynomClient: PolynomClient, parser: Pars
     val excelHandler = ExcelHandler()
     val groupId = GroupId(2866)
 
+
     try {
         val boltSpecifications = extractAndFilterBolts(excelHandler, filePath)
 
         if (boltSpecifications.isNotEmpty()) {
-            boltSpecifications.take(100).forEach { bolt ->
-                polynomClient.element(
-                    CreateElementRequest(
-                        groupId, name = ElementName(parser.parsePartData(bolt).toFormattedString())
+            boltSpecifications.take(10).forEach { bolt ->
+                logger.doWithLogging("create empty polynom objects") {
+                    polynomClient.element(
+                        CreateElementRequest(
+                            groupId, name = ElementName(parser.parsePartData(bolt).toFormattedString())
+                        )
                     )
-                )
+                }
             }
-            println("Внесено 100 болтов")
+            println("Внесено 10 болтов")
         } else {
             println("Не найдено записей, соответствующих критериям: начинающихся с 'Болт М' и заканчивающихся 'ГОСТ 7805-70'")
         }

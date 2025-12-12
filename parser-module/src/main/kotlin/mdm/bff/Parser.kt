@@ -1,8 +1,9 @@
 package com.khan366kos.mdm.bff
 
+import com.khan366kos.etlassistant.logging.LogbackLogger
 import mdm.bff.partlib.CoatingCondition
 import mdm.bff.partlib.Material
-import com.khan366kos.mdm.bff.partlib.PartData
+import mdm.bff.partlib.PartData
 import com.khan366kos.mdm.bff.partlib.ThreadPitch
 import com.khan366kos.mdm.bff.partlib.ThreadWrenchSize
 
@@ -35,37 +36,40 @@ class Parser {
         )
     }
 
-    fun parsePartData(input: String): PartData {
-        val coatingCodeFull = extractCoatingCode(input)
-        val coatingCode = if (coatingCodeFull.length > 2) coatingCodeFull.take(2) else coatingCodeFull
-        val coating = CoatingCondition.getCoatingByCode(coatingCode)
+    private val parserLogger = LogbackLogger("Parser")
 
-        val coatingThickness = when (coatingCode) {
-            "05", "06", "11", "12" -> "Не нормируется"
-            else -> coatingCodeFull.lastOrNull()?.toString() ?: "Нет"
+    suspend fun parsePartData(input: String): PartData {
+        return parserLogger.doWithLogging("parse string") {
+            val coatingCodeFull = extractCoatingCode(input)
+            val coatingCode = if (coatingCodeFull.length > 2) coatingCodeFull.take(2) else coatingCodeFull
+            val coating = CoatingCondition.getCoatingByCode(coatingCode)
+
+            val coatingThickness = when (coatingCode) {
+                "05", "06", "11", "12" -> "Не нормируется"
+                else -> coatingCodeFull.lastOrNull()?.toString() ?: "Нет"
+            }
+
+            val material = extractMaterial(input, coatingCodeFull.isNotEmpty())
+            val strengthGrade = extractStrengthGrade(input)
+            val length = extractLength(input)
+            val threadDiameter = extractThreadDiameter(input)
+            val wrenchSize = extractWrenchSize(input, threadDiameter)
+            val threadPitch = extractThreadPitch(input, threadDiameter)
+
+            val partData = PartData(
+                coatingThickness = coatingThickness,
+                coating = coating,
+                material = material,
+                length = length,
+                threadDiameter = threadDiameter,
+                wrenchSize = wrenchSize,
+                threadPitch = threadPitch,
+                strengthGrade = strengthGrade
+            )
+
+            println("$input -> ${partData.toFormattedString()}")
+            partData
         }
-
-        val material = extractMaterial(input, coatingCodeFull.isNotEmpty())
-        val strengthGrade = extractStrengthGrade(input)
-        val length = extractLength(input)
-        val threadDiameter = extractThreadDiameter(input)
-        val wrenchSize = extractWrenchSize(input, threadDiameter)
-        val threadPitch = extractThreadPitch(input, threadDiameter)
-
-        val partData = PartData(
-            coatingThickness = coatingThickness,
-            coating = coating,
-            material = material,
-            length = length,
-            threadDiameter = threadDiameter,
-            wrenchSize = wrenchSize,
-            threadPitch = threadPitch,
-            strengthGrade = strengthGrade
-        )
-
-        println("$input -> ${partData.toFormattedString()}")
-
-        return partData
     }
 
     private fun extractStrengthGrade(input: String): String {

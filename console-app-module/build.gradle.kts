@@ -23,7 +23,7 @@ dependencies {
 
     implementation(libs.kotlinx.serialization.json)
 
-
+    implementation(projects.loggingModule)
 
     testImplementation(libs.kotest)
     testImplementation(libs.kotest.runner)

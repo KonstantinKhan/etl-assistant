@@ -1,5 +1,6 @@
 package com.khan366kos.mdm.bff
 
+import com.khan366kos.parser.partlib.Parser
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
 
@@ -44,6 +45,15 @@ class ParserTest : ShouldSpec({
         val parser = Parser()
         val input = "Болт М5-6gx12.24 ГОСТ 7805-70"
         val expectedOutput = "[Нет;Без покрытия;Без указания материала;12;5;8;0,8;24]"
+        val result = parser.parsePartData(input).toFormattedString()
+
+        result shouldBe expectedOutput
+    }
+
+    should("parse bolt Болт М10x1,25-6gx30.36.0812 (S16) ГОСТ 7805-70") {
+        val parser = Parser()
+        val input = "Болт М10x1,25-6gx30.36.0812 (S16) ГОСТ 7805-70"
+        val expectedOutput = "[12;Медное;Без указания материала;30;10;16;1,25;3.6]"
         val result = parser.parsePartData(input).toFormattedString()
 
         result shouldBe expectedOutput

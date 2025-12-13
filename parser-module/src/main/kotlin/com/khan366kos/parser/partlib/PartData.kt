@@ -1,4 +1,4 @@
-package mdm.bff.partlib
+package com.khan366kos.parser.partlib
 
 data class PartData(
     val coatingThickness: String,

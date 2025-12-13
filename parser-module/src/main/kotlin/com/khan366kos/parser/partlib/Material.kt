@@ -1,4 +1,4 @@
-package mdm.bff.partlib
+package com.khan366kos.parser.partlib
 
 object Material {
     private val materialMap = mapOf(
@@ -10,8 +10,6 @@ object Material {
         "40Х" to "Сталь 40Х ГОСТ 4543-2016"
     )
 
-    fun getMaterialByCode(code: String): String {
-        return materialMap[code] ?: code
-    }
+    fun getMaterialByCode(code: String): String = materialMap[code] ?: "Без указания материала"
 }
 

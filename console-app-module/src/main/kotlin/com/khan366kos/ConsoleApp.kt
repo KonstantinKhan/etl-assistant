@@ -14,7 +14,7 @@ import com.khan366kos.common.requests.CreateElementRequest
 import com.khan366kos.common.requests.PropertyAssignmentRequest
 import com.khan366kos.common.requests.PropertyValueAssignment
 import com.khan366kos.etlassistant.logging.logger
-import com.khan366kos.mdm.bff.Parser
+import com.khan366kos.parser.partlib.Parser
 import khan366kos.excel.handler.ExcelHandler
 import kotlinx.coroutines.runBlocking
 import java.io.File

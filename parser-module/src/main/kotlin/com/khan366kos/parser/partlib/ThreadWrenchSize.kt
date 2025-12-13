@@ -1,10 +1,6 @@
-package com.khan366kos.mdm.bff.partlib
+package com.khan366kos.parser.partlib
 
 object ThreadWrenchSize {
-    /**
-     * Справочник размеров «под ключ» в зависимости от диаметра резьбы (мм).
-     * Ключ – диаметр резьбы в мм (как строка), значение – размер под ключ в мм (также как строка).
-     */
     private val wrenchSizeMap = mapOf(
         "1.6" to "3.2",
         "2" to "4",
@@ -30,10 +26,6 @@ object ThreadWrenchSize {
         "48" to "75"
     )
 
-    /**
-     * Возвращает размер под ключ (мм) по диаметру резьбы (мм) в виде строки.
-     * Если диаметр не найден в справочнике, возвращает null.
-     */
     fun getWrenchSizeByDiameter(diameter: String): String {
         return wrenchSizeMap[diameter] ?: "Неизвестное значение"
     }

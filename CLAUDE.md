@@ -4,12 +4,16 @@ Welcome to the ETL Assistant project. This tool is designed to help with Extract
 
 ## Project Structure
 
-The project follows a modular architecture:
+The project follows a modular architecture. Below is an overview of the modules:
 
-- `common-models-module/` - Shared data models and business logic
-- `console-app-module/` - Console application entry point
-- `excel-module/` - Excel file processing functionality
-- `logging-module/` - Logging utilities and configurations
+| Module Name                                   | Description                                                     |
+|-----------------------------------------------|-----------------------------------------------------------------|
+| [common-models-module/](common-models-module) | Shared data models and business logic                           |
+| [console-app-module/](console-app-module)     | Console application entry point                                 |
+| [excel-module/](excel-module)                 | Excel file processing functionality                             |
+| [logging-module/](logging-module)             | Logging utilities and configurations                            |
+| [parser-module/](parser-module)               | Provides parsing functionalities.                               |
+| [polynom-bff-module/](polynom-bff-module)     | Backend-for-frontend (BFF) module for polynom-related services. |
 
 ## Development
 
@@ -79,4 +83,5 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
 }
  ```
+
 - 

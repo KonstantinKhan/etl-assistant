@@ -21,10 +21,5 @@ object CoatingCondition {
         return coatingMap[code] ?: "Без покрытия"
     }
 
-    fun existCoating(code: String): Boolean {
-        println("code: $code")
-        val result = coatingMap.containsKey(code)
-        println("result: $result")
-        return result
-    }
+    fun existCoating(code: String): Boolean = coatingMap.containsKey(code)
 }

@@ -4,46 +4,21 @@ import com.khan366kos.etlassistant.logging.logger
 
 class Parser {
     private val parserLogger = logger("Parser")
+    private val nonStandardizedCoatingCodes = setOf("05", "06", "11", "12")
 
     suspend fun parsePartData(input: String): PartData {
         return parserLogger.doWithLogging("parsePartData()") {
-            val coatingCodeFullCandidate = coatingCodeFullCandidate(input)
-            println("coatingCodeFullCandidate: $coatingCodeFullCandidate")
-            val coatingCodeCandidate =
-                if (coatingCodeFullCandidate.length > 2) coatingCodeFullCandidate.take(2) else coatingCodeFullCandidate
-            val coating = CoatingCondition.getCoatingByCode(coatingCodeCandidate)
-
-            val coatingThickness =
-                if (CoatingCondition.existCoating(coatingCodeCandidate)) {
-                    when (coatingCodeCandidate) {
-                        "05", "06", "11", "12" -> "Не нормируется"
-                        else -> if (coatingCodeFullCandidate.length > 3) coatingCodeFullCandidate.takeLast(2)
-                        else coatingCodeFullCandidate.last().toString()
-                    }
-                } else "Нет"
-
-            val materialCandidatePattern =
-                Regex("""\.([a-zA-Z0-9а-яА-Я]*[a-zA-Zа-яА-Я][a-zA-Z0-9а-яА-Я]*)(?=\.| |\n|$)""")
-            val materialMatch = materialCandidatePattern.find(input)
-            val materialCandidate = materialMatch?.groupValues?.getOrNull(1) ?: ""
-
-            val strengthGrageCandidatePattern = Regex("""\.(\d+)(?=\.| |\s|\n|$)""")
-            val strengthGradeMatch = strengthGrageCandidatePattern.find(input)
-            val strengthGradeCandidate = strengthGradeMatch?.groupValues?.getOrNull(1) ?: ""
-
-            val lengthPattern = Regex("""-6gx([^.]+)\.""")
-            val lengthMatch = lengthPattern.find(input)
-
-            val material = extractMaterial(materialCandidate)
-            val strengthGrade = extractStrengthGrade(strengthGradeCandidate)
-            val length = lengthMatch?.groupValues?.getOrNull(1) ?: ""
+            val coatingData = extractCoatingData(input)
+            val material = extractMaterial(input)
+            val strengthGrade = extractStrengthGrade(input)
+            val length = extractLength(input)
             val threadDiameter = extractThreadDiameter(input)
             val wrenchSize = extractWrenchSize(input, threadDiameter)
             val threadPitch = extractThreadPitch(input, threadDiameter)
 
             val partData = PartData(
-                coatingThickness = coatingThickness,
-                coating = coating,
+                coatingThickness = coatingData.thickness,
+                coating = coatingData.coating,
                 material = material,
                 length = length,
                 threadDiameter = threadDiameter,
@@ -57,60 +32,85 @@ class Parser {
         }
     }
 
-    private fun extractStrengthGrade(input: String): String = StrengthGrade.getStrengthGradeCode(input)
-
-    private fun extractMaterial(input: String): String = Material.getMaterialByCode(input)
-
-    private fun coatingCodeFullCandidate(input: String): String {
+    private fun extractCoatingData(input: String): CoatingData {
         val gostIndex = input.indexOf(" ГОСТ")
-        if (gostIndex == -1) return ""
+        if (gostIndex == -1) return CoatingData.empty()
 
-        var lastIndex = input.lastIndexOf('.', gostIndex)
-        if (lastIndex == -1) return ""
+        val lastDotIndex = input.lastIndexOf('.', gostIndex)
+        if (lastDotIndex == -1) return CoatingData.empty()
 
-        lastIndex += 1
-        val coatingText = input.substring(lastIndex, gostIndex).trim().split(" ")[0]
+        val coatingCodeCandidate = input.substring(lastDotIndex + 1, gostIndex)
+            .trim()
+            .split(" ")[0]
 
-        if (coatingText.length !in 2..4 || !coatingText.all { it.isDigit() }) {
-            return ""
+        if (coatingCodeCandidate.length !in 2..4 || !coatingCodeCandidate.all { it.isDigit() }) {
+            return CoatingData.empty()
         }
 
-        return coatingText
+        val coatingCode = coatingCodeCandidate.take(2)
+        val coating = CoatingCondition.getCoatingByCode(coatingCode)
+
+        val thickness = when {
+            !CoatingCondition.existCoating(coatingCode) -> "Нет"
+            coatingCode in nonStandardizedCoatingCodes -> "Не нормируется"
+            coatingCodeCandidate.length > 3 -> coatingCodeCandidate.takeLast(2)
+            coatingCodeCandidate.length == 3 -> coatingCodeCandidate.last().toString()
+            else -> "Нет"
+        }
+
+        return CoatingData(coating, thickness)
+    }
+
+    private fun extractMaterial(input: String): String {
+        val pattern = Regex("""\.([a-zA-Z0-9а-яА-Я]*[a-zA-Zа-яА-Я][a-zA-Z0-9а-яА-Я]*)(?=\.| |\n|$)""")
+        val candidate = pattern.find(input)?.groupValues?.getOrNull(1) ?: ""
+        return Material.getMaterialByCode(candidate)
+    }
+
+    private fun extractStrengthGrade(input: String): String {
+        val pattern = Regex("""\.(\d+)(?=\.| |\s|\n|$)""")
+        val candidate = pattern.find(input)?.groupValues?.getOrNull(1) ?: ""
+        return StrengthGrade.getStrengthGradeCode(candidate)
+    }
+
+    private fun extractLength(input: String): String {
+        val pattern = Regex("""-6gx([^.]+)\.""")
+        return pattern.find(input)?.groupValues?.getOrNull(1) ?: ""
     }
 
     private fun extractThreadDiameter(input: String): String {
-        val pattern = """[MmМм]\s*([0-9]+(?:[.,][0-9]+)?)""".toRegex()
-        val match = pattern.find(input) ?: return ""
-        val diameter = match.groupValues[1].trim()
-        return diameter
+        val pattern = Regex("""[MmМм]\s*([0-9]+(?:[.,][0-9]+)?)""")
+        val candidate = pattern.find(input)?.groupValues?.getOrNull(1) ?: ""
+        return candidate.trim()
     }
 
     private fun extractWrenchSize(input: String, threadDiameter: String): String {
-        val parenthesesPattern = "\\(([^)]*?)\\)\\s*ГОСТ".toRegex()
-        val match = parenthesesPattern.find(input)
+        val pattern = Regex("""\(([^)]*?)\)\s*ГОСТ""")
+        val parenthesesCandidate = pattern.find(input)
+            ?.groupValues
+            ?.getOrNull(1)
+            ?.replace(Regex("\\p{L}"), "")
+            ?.trim()
 
-        if (match != null) {
-            val insideParentheses = match.groupValues[1]
-            val cleaned = insideParentheses.replace(Regex("\\p{L}"), "").trim()
-            if (cleaned.isNotEmpty()) {
-                return cleaned
-            }
-        }
-
-        val normalizedDiameter = threadDiameter.replace(',', '.')
-        return ThreadWrenchSize.getWrenchSizeByDiameter(normalizedDiameter)
+        return parenthesesCandidate
+            ?.takeIf { it.isNotEmpty() }
+            ?: ThreadWrenchSize.getWrenchSizeByDiameter(threadDiameter.replace(',', '.'))
     }
 
     private fun extractThreadPitch(input: String, threadDiameter: String): String {
-        val threadPitchRegex = Regex("x(\\d+(?:,\\d+)?)-")
-        val threadPitchMatch = threadPitchRegex.find(input)
-        val threadePitch = threadPitchMatch?.groupValues?.getOrNull(1) ?: ""
-
-        return threadePitch.ifEmpty { getDefaultPitch(threadDiameter) }
+        val pattern = Regex("""x(\d+(?:,\d+)?)-""")
+        val candidate = pattern.find(input)?.groupValues?.getOrNull(1) ?: ""
+        return candidate.ifEmpty {
+            ThreadPitch.getPitchByDiameter(threadDiameter)
+        }
     }
 
-    private fun getDefaultPitch(threadDiameter: String): String {
-        val pitch = ThreadPitch.getPitchByDiameter(threadDiameter)
-        return pitch
+    private data class CoatingData(
+        val coating: String,
+        val thickness: String
+    ) {
+        companion object {
+            fun empty() = CoatingData("Без покрытия", "Нет")
+        }
     }
 }

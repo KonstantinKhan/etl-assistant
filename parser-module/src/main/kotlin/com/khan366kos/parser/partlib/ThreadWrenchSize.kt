@@ -26,9 +26,7 @@ object ThreadWrenchSize {
         "48" to "75"
     )
 
-    fun getWrenchSizeByDiameter(diameter: String): String {
-        return wrenchSizeMap[diameter] ?: "Неизвестное значение"
-    }
+    fun getWrenchSizeByDiameter(diameter: String): String = wrenchSizeMap[diameter] ?: "Неизвестное значение"
 }
 
 

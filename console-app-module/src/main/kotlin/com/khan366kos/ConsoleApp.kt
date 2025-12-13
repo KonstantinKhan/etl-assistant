@@ -13,13 +13,13 @@ import com.khan366kos.common.models.values.Values
 import com.khan366kos.common.requests.CreateElementRequest
 import com.khan366kos.common.requests.PropertyAssignmentRequest
 import com.khan366kos.common.requests.PropertyValueAssignment
-import com.khan366kos.etlassistant.logging.LogbackLogger
+import com.khan366kos.etlassistant.logging.logger
 import com.khan366kos.mdm.bff.Parser
 import khan366kos.excel.handler.ExcelHandler
 import kotlinx.coroutines.runBlocking
 import java.io.File
 
-val logger = LogbackLogger("console logger")
+val logger = logger("ConsoleApp")
 
 fun getFileFromInput(): String? {
     print("Введите путь к Excel файлу: ")

@@ -1,6 +1,7 @@
 package com.khan366kos.mdm.bff
 
-import com.khan366kos.etlassistant.logging.LogbackLogger
+import com.khan366kos.etlassistant.logging.LogWrapper
+import com.khan366kos.etlassistant.logging.logger
 import mdm.bff.partlib.CoatingCondition
 import mdm.bff.partlib.Material
 import mdm.bff.partlib.PartData
@@ -36,10 +37,10 @@ class Parser {
         )
     }
 
-    private val parserLogger = LogbackLogger("Parser")
+    private val parserLogger = logger("Parser")
 
     suspend fun parsePartData(input: String): PartData {
-        return parserLogger.doWithLogging("parse string") {
+        return parserLogger.doWithLogging("parsePartData()") {
             val coatingCodeFull = extractCoatingCode(input)
             val coatingCode = if (coatingCodeFull.length > 2) coatingCodeFull.take(2) else coatingCodeFull
             val coating = CoatingCondition.getCoatingByCode(coatingCode)

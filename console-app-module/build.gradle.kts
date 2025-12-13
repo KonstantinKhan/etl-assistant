@@ -5,10 +5,10 @@ plugins {
 
 dependencies {
     implementation(projects.commonModelsModule)
+    implementation(projects.loggingModule)
     implementation(projects.polynomBffModule)
     implementation(projects.parserModule)
     implementation(projects.excelModule)
-    implementation(projects.loggingModule)
 
     implementation(libs.kotlinx.coroutines.core)
 

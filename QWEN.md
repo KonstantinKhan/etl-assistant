@@ -1,24 +1,67 @@
 # QWEN.md
 
+This tool is designed to help with Extract, Transform, and Load processes.
+
+## Project Structure
+
+The project follows a modular architecture. Below is an overview of the modules:
+
+| Module Name                               | Description                                                     | Docs                                              |
+|-------------------------------------------|-----------------------------------------------------------------|---------------------------------------------------|
+| `common-models-module`                    | Shared data models and business logic                           |                                                   |
+| [console-app-module/](console-app-module) | Console application entry point                                 |                                                   |
+| [excel-module/](excel-module)             | Excel file processing functionality                             |                                                   |
+| [logging-module/](logging-module)         | Logging utilities and configurations                            |                                                   |
+| [parser-module/](parser-module)           | Provides parsing functionalities.                               | [parser-module.md](docs/modules/parser-module.md) |
+| [polynom-bff-module/](polynom-bff-module) | Backend-for-frontend (BFF) module for polynom-related services. |                                                   |
+
+## Development
+
+### Building the Project
+
+```bash
+./gradlew build 2>&1 | grep -E "(error|fail|ERROR|FAIL)"
+```
+
+### Running Tests
+
+```bash
+./gradlew test
+```
+
+### Running the Application
+
+```bash
+./gradlew run
+```
+
+## Coding Conventions
+
+- Use value classes for simple fields
+- Use data classes for business models
+- Separate business objects, requests, and responses into individual data classes
+- Follow Kotest with Should Spec test style for testing
+
 ## Dependencies
 
-- Use dependencies from [libs.versions.toml](gradle/libs.versions.toml)
-- Use projects.{module_name} for include dependencies
+Dependencies are managed through Gradle and defined in `libs.versions.toml`.
 
-## Testing
+## Contributing
 
-- Use Kotest, Should Spec test style
+Follow the clean architecture principles and maintain consistent coding standards.
 
-## Building & Running
+## Project settings
 
-To build or run the project, use one of the following tasks:
-| Task | Description |
-|-------------------|------------------|
-| `./gradlew.bat test`  | Run the tests |
-| `./gradlew.bat build` | Build everything |
-| `./gradlew.bat run`   | Run the server |
+- The plugins section uses `alias` from [libs.versions.toml](/gradle/libs.versions.toml)
+- Don't use `implementation(kotlin("stdlib"))`, the standard library is used via
 
-## Developmnet conventions
-- All simple fields should be value classes.
-- All business models should be data classes.
-- Each business object, request or response should be in a separate data class.
+```kotlin 
+plugins {
+    alias(libs.plugins.kotlin.jvm)
+}
+ ```
+
+## Skills
+
+Before completing the task, be sure to read the skill description file [sills](/docs/SKILLS_INDEX.md) and use them if it
+is appropriate for the context of the task. The description of the skills is in the files `SKILLS.md`

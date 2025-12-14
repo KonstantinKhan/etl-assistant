@@ -19,10 +19,6 @@ The project follows a modular architecture. Below is an overview of the modules:
 
 ### Building the Project
 
-```bash
-./gradlew build 2>&1 | grep -E "(error|fail|ERROR|FAIL)"
-```
-
 ### Running Tests
 
 ```bash
@@ -63,5 +59,5 @@ plugins {
 
 ## Skills
 
-Before completing the task, be sure to read the skill description file [sills](/docs/SKILLS_INDEX.md) and use them if it
+Before completing the task, be sure to read the skill description file [skills](/docs/SKILLS_INDEX.md) and use them if it
 is appropriate for the context of the task. The description of the skills is in the files `SKILLS.md`

@@ -1,4 +1,8 @@
 package khan366kos.excel.handler
 
-class Workbook {
+data class Workbook(
+    val path: String,
+    val sheets: List<Sheet>,
+) {
+
 }

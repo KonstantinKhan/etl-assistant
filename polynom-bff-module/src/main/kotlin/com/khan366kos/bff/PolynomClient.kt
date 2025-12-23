@@ -1,5 +1,6 @@
 package com.khan366kos.bff
 
+import StorageTransport
 import com.khan366kos.bff.auth.AuthPlugin
 import com.khan366kos.bff.auth.TokenManager
 import com.khan366kos.common.models.business.ObjectInfo
@@ -26,6 +27,7 @@ import io.ktor.http.URLProtocol
 import io.ktor.http.contentType
 import io.ktor.http.path
 import io.ktor.serialization.kotlinx.json.*
+import kotlinx.serialization.json.Json
 
 
 class PolynomClient {
@@ -36,18 +38,20 @@ class PolynomClient {
 
         private val SERVER_HOST = System.getenv("SERVER_HOST") ?: System.getProperty("server.host", DEFAULT_HOST)
         private val SERVER_PORT = System.getenv("SERVER_PORT") ?: System.getProperty("server.port", DEFAULT_PORT)
-        private val BASE_URL = "http://$SERVER_HOST:$SERVER_PORT"
+        private val BASE_URL = "https://$SERVER_HOST:$SERVER_PORT"
     }
 
     private val tokenManager = TokenManager()
 
     val client = HttpClient(CIO) {
         install(ContentNegotiation) {
-            json()
+            json(Json {
+                ignoreUnknownKeys = true
+            })
         }
         install(DefaultRequest) {
             url {
-                protocol = URLProtocol.HTTP
+                protocol = URLProtocol.HTTPS
                 host = SERVER_HOST
                 port = SERVER_PORT.toInt()
                 path("$BASE_API_PATH/")
@@ -66,6 +70,8 @@ class PolynomClient {
             requestTimeoutMillis = 30_000
         }
     }
+
+    suspend fun storageDefinitions(): ArrayList<StorageTransport> = client.get("login/storage-definitions").body()
 
     suspend fun allReference(): String {
         return client.get("reference/all").bodyAsText()

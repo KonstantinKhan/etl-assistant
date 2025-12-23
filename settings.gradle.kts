@@ -7,6 +7,7 @@ include("polynom-bff-module")
 include("common-models-module")
 include("excel-module")
 include("logging-module")
+include("transport-models")
 
 dependencyResolutionManagement {
     repositories {

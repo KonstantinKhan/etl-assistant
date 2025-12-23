@@ -9,6 +9,7 @@ dependencies {
     implementation(projects.polynomBffModule)
     implementation(projects.parserModule)
     implementation(projects.excelModule)
+    implementation(projects.transportModels)
 
     implementation(libs.kotlinx.coroutines.core)
 

@@ -12,6 +12,9 @@ import com.khan366kos.common.responses.PropertyOwnerRespose
 import com.khan366kos.common.requests.CreateElementRequest
 import com.khan366kos.common.requests.PropertyAssignmentRequest
 import com.khan366kos.common.requests.PropertyOwnerRequest
+import com.khan366kos.etl.assistant.transport.models.ElementCatalogTransport
+import com.khan366kos.etl.assistant.transport.models.ElementGroupTransport
+import com.khan366kos.etl.assistant.transport.models.IdentifiableObjectTransport
 import io.ktor.client.*
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.*
@@ -78,6 +81,16 @@ class PolynomClient {
     suspend fun getAll(): List<ReferenceTransport> {
         return client.post("reference/get-all").body()
     }
+
+    suspend fun getByReference(request: IdentifiableObjectTransport): Array<ElementCatalogTransport> =
+        client.post("element-catalog/get-by-reference") {
+            setBody(request)
+        }.body()
+
+    suspend fun getByCatalog(request: IdentifiableObjectTransport): List<ElementGroupTransport> =
+        client.post("element-group/get-by-catalog") {
+            setBody(request)
+        }.body()
 
     suspend fun element(request: CreateElementRequest): ElementResponse {
         return client.post("element/create") {

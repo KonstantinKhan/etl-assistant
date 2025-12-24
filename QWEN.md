@@ -4,6 +4,7 @@ This tool is designed to help with Extract, Transform, and Load processes.
 
 ## Rules and conventions
 
+- !!!NECESSARILY!!! First of all, always read the documentation, if there is one. 
 - Before completing a task, first of all, be sure to read the documentation for the module you plan to work with.
 - First of all, check the modules and files according to the documentation, only if you do not find any data in it, you can scan the project.
 

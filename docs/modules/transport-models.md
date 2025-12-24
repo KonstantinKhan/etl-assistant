@@ -2,7 +2,13 @@
 
 ## Location
 
+### Module
+
 [transport-models](../../transport-models)
+
+### Models
+
+[models](../../transport-models/src/main/kotlin/com/khan366kos/etl/assistant/transport/models)
 
 ## Tech stack
 
@@ -15,9 +21,11 @@
 - Add `Transport` at the end of the data class name
 - All fields of the class must have @SerialName written, use camelcase
 - For `typeId` with `IdentifiableObjectType` always use non-nullable `Int` type
+- For `applicability` with `Applicability` always use non-nullable `Int` type
 - All nullable class fields must have a default value of `null`
 
 ## Exapmles
+
 ```kotlin
 @Serializable
 data class RoleTransport(

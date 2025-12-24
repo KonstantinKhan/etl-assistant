@@ -4,37 +4,43 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ReferenceTransport(
+data class ElementCatalogTransport(
     @SerialName("name")
     val name: String? = null,
-    
+
     @SerialName("iconCode")
-    val iconCode: Int,
-    
+    val iconCode: Int = 0,
+
     @SerialName("iconColor")
     val iconColor: Int? = null,
-    
+
     @SerialName("writeAccess")
-    val writeAccess: Boolean,
-    
+    val writeAccess: Boolean = false,
+
+    @SerialName("classId")
+    val classId: String? = null,
+
     @SerialName("id")
     val id: String? = null,
-    
+
     @SerialName("description")
     val description: String? = null,
-    
+
     @SerialName("objectId")
-    val objectId: Int,
-    
+    val objectId: Int = 0,
+
     @SerialName("typeId")
     val typeId: Int,
-    
+
     @SerialName("path")
     val path: List<NamedObjectTransport>? = null,
-    
-    @SerialName("documentCatalog")
-    val documentCatalog: DocumentCatalogTransport? = null,
-    
-    @SerialName("viewpointCatalog")
-    val viewpointCatalog: ViewpointCatalogTransport? = null
+
+    @SerialName("count")
+    val count: Int = 0,
+
+    @SerialName("reference")
+    val reference: IdentifiableObjectTransport? = null,
+
+    @SerialName("isEntry")
+    val isEntry: Boolean? = null
 )

@@ -5,5 +5,5 @@ import kotlinx.coroutines.runBlocking
 
 fun main(): Unit = runBlocking {
     val client = PolynomClient()
-    println(client.storageDefinitions())
+    println(client.getAll())
 }

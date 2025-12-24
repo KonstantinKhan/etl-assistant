@@ -1,6 +1,8 @@
 package com.khan366kos.bff
 
-import StorageTransport
+import com.khan366kos.etl.assistant.transport.models.ReferenceTransport
+import com.khan366kos.etl.assistant.transport.models.StorageDefinitionTransport
+import com.khan366kos.etl.assistant.transport.models.UserTransport
 import com.khan366kos.bff.auth.AuthPlugin
 import com.khan366kos.bff.auth.TokenManager
 import com.khan366kos.common.models.business.ObjectInfo
@@ -68,10 +70,13 @@ class PolynomClient {
         }
     }
 
-    suspend fun storageDefinitions(): ArrayList<StorageTransport> = client.get("login/storage-definitions").body()
+    suspend fun storageDefinitions(): ArrayList<StorageDefinitionTransport> =
+        client.get("login/storage-definitions").body()
 
-    suspend fun allReference(): String {
-        return client.get("reference/all").bodyAsText()
+    suspend fun currentUserInfo(): UserTransport = client.get("login/current-user-info").body()
+
+    suspend fun getAll(): List<ReferenceTransport> {
+        return client.post("reference/get-all").body()
     }
 
     suspend fun element(request: CreateElementRequest): ElementResponse {

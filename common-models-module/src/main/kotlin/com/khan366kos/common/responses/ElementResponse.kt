@@ -16,11 +16,12 @@ data class ElementResponse(
     val objectId: ObjectId,
     val typeId: TypeId,
     val name: ElementName,
+    val writeAccess: Boolean,
     val iconCode: IconCode,
     val iconColor: IconColor,
     val path: List<PathElement>,
     val id: PathId,
-    val ownerGroup: OwnerGroup,
+    val ownerGroup: OwnerGroup? = null,
     val applicability: Applicability,
     val isMaterial: Boolean,
     val isAssortmentInstancesOwner: Boolean

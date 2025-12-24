@@ -27,7 +27,6 @@ import io.ktor.http.URLProtocol
 import io.ktor.http.contentType
 import io.ktor.http.path
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.serialization.json.Json
 
 
 class PolynomClient {
@@ -45,9 +44,7 @@ class PolynomClient {
 
     val client = HttpClient(CIO) {
         install(ContentNegotiation) {
-            json(Json {
-                ignoreUnknownKeys = true
-            })
+            json()
         }
         install(DefaultRequest) {
             url {
@@ -78,7 +75,7 @@ class PolynomClient {
     }
 
     suspend fun element(request: CreateElementRequest): ElementResponse {
-        return client.post("element") {
+        return client.post("element/create") {
             setBody(request)
         }.body()
     }

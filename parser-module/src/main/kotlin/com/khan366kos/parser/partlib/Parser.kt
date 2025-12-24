@@ -74,7 +74,7 @@ class Parser {
     }
 
     private fun extractLength(input: String): String {
-        val pattern = Regex("""-6gx([^.]+)\.""")
+        val pattern = Regex("""-6g[хx]([^.]+)\.""")
         return pattern.find(input)?.groupValues?.getOrNull(1) ?: ""
     }
 

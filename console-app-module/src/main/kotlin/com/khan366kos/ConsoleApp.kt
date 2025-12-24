@@ -11,6 +11,7 @@ import com.khan366kos.common.models.simple.TypeId
 import com.khan366kos.common.models.values.StringPropertyValues
 import com.khan366kos.common.models.values.Values
 import com.khan366kos.common.requests.CreateElementRequest
+import com.khan366kos.common.requests.ParentGroup
 import com.khan366kos.common.requests.PropertyAssignmentRequest
 import com.khan366kos.common.requests.PropertyValueAssignment
 import com.khan366kos.etlassistant.logging.logger
@@ -68,7 +69,11 @@ suspend fun processBoltSpecifications(polynomClient: PolynomClient, parser: Pars
                 logger.doWithLogging("create empty polynom objects") {
                     polynomClient.element(
                         CreateElementRequest(
-                            groupId, name = ElementName(parser.parsePartData(bolt).toFormattedString())
+                            Identifier(
+                                ObjectId(groupId.groupId),
+                                TypeId(39),
+                            ),
+                            name = ElementName(parser.parsePartData(bolt).toFormattedString()).name
                         )
                     )
                 }

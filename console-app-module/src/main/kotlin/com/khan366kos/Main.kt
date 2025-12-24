@@ -4,6 +4,6 @@ import com.khan366kos.bff.PolynomClient
 import kotlinx.coroutines.runBlocking
 
 fun main(): Unit = runBlocking {
-    val client: PolynomClient = PolynomClient()
+    val client = PolynomClient()
     println(client.storageDefinitions())
 }

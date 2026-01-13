@@ -26,6 +26,7 @@ import io.ktor.http.URLProtocol
 import io.ktor.http.contentType
 import io.ktor.http.path
 import io.ktor.serialization.kotlinx.json.*
+import kotlinx.coroutines.launch
 
 
 class PolynomClient {
@@ -63,7 +64,7 @@ class PolynomClient {
             level = LogLevel.HEADERS
         }
         install(HttpTimeout) {
-            requestTimeoutMillis = 30_000
+            requestTimeoutMillis = 120_000
         }
     }
 

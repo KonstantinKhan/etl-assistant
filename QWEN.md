@@ -25,6 +25,19 @@ The project follows a modular architecture. Below is an overview of the modules:
 ./gradlew test
 ```
 
+For Windows, use:
+```bash
+.\gradlew.bat test
+```
+
+**Note:** If you encounter test discovery issues with Kotest's ShouldSpec in specific modules, make sure the module's `build.gradle.kts` contains:
+
+```kotlin
+tasks.test {
+    useJUnitPlatform()
+}
+```
+
 ### Running the Application
 
 ```bash

@@ -7,15 +7,31 @@ class LogWrapper(val logger: Logger, loggerId: String = "") {
     suspend fun <T> doWithLogging(
         id: String = "",
         level: LogLevel = LogLevel.INFO,
+        item: String = "",
         function: suspend () -> T
     ): T = try {
         logger.info("$level: $id started")
         val (result, duration) = measureTimedValue { function() }
         logger.info("$level: $id finished")
-        logger.info("$level: $id duration=$duration")
+        logger.info("$level: $id, $item duration=$duration")
         result
     } catch (t: Throwable) {
         logger.error("$level: $id error", t)
         throw t
+    }
+
+    suspend fun error(
+        id: String = "",
+        level: LogLevel = LogLevel.INFO,
+        t: Throwable?
+    ) {
+        logger.error("$level: $id - $t")
+    }
+
+    suspend fun info(
+        id: String = "",
+        level: LogLevel = LogLevel.INFO,
+    ) {
+        logger.info(id)
     }
 }

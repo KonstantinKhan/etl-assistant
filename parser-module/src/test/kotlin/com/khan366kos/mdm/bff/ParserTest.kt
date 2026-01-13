@@ -10,7 +10,6 @@ class ParserTest : ShouldSpec({
         val input = "Болт М8-6gx55.88.019 ГОСТ 7805-70"
         val expectedOutput = "[9;Цинковое, хроматированное;Без указания материала;55;8;13;1,25;8.8]"
         val result = parser.parsePartData(input).toFormattedString()
-
         result shouldBe expectedOutput
     }
 
@@ -54,6 +53,24 @@ class ParserTest : ShouldSpec({
         val parser = Parser()
         val input = "Болт М10x1,25-6gx30.36.0812 (S16) ГОСТ 7805-70"
         val expectedOutput = "[12;Медное;Без указания материала;30;10;16;1,25;3.6]"
+        val result = parser.parsePartData(input).toFormattedString()
+
+        result shouldBe expectedOutput
+    }
+
+    should("parse bolt Болт М14х50.23.20Х13 ГОСТ 7805-70") {
+        val parser = Parser()
+        val input = "Болт М14х50.23.20Х13 ГОСТ 7805-70"
+        val expectedOutput = "[Нет;Без покрытия;Сталь 20Х13 ГОСТ 5632-2014;30;14;22;2;23]"
+        val result = parser.parsePartData(input).toFormattedString()
+
+        result shouldBe expectedOutput
+    }
+
+    should("parse bolt Болт М16х1,5-6gх25.66.019 ГОСТ 7805-70") {
+        val parser = Parser()
+        val input = "Болт М16х1,5-6gх25.66.019 ГОСТ 7805-70"
+        val expectedOutput = "[9;Цинковое, хроматированное;Без указания материала;25;16;24;2;6.6]"
         val result = parser.parsePartData(input).toFormattedString()
 
         result shouldBe expectedOutput

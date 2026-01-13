@@ -16,10 +16,56 @@ import com.khan366kos.common.requests.PropertyValueAssignment
 import com.khan366kos.etlassistant.logging.logger
 import com.khan366kos.parser.partlib.Parser
 import khan366kos.excel.handler.ExcelHandler
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Semaphore
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withTimeout
 import java.io.File
 
 val logger = logger("ConsoleApp")
+
+/**
+ * Executes the given block with retry logic.
+ *
+ * @param maxAttempts Maximum number of attempts including the initial one
+ * @param initialDelayMs Initial delay between retries in milliseconds
+ * @param factor Exponential backoff factor for delays between retries
+ * @param block The suspending function to execute with retries
+ * @return The result of the block if successful, or a failure Result if all attempts fail
+ */
+suspend fun <T> retry(
+    maxAttempts: Int = 3,
+    initialDelayMs: Long = 1000L,
+    factor: Double = 2.0,
+    block: suspend () -> T
+): Result<T> {
+    var currentDelay = initialDelayMs
+    var lastException: Exception? = null
+
+    repeat(maxAttempts) { attempt ->
+        try {
+            val result = block()
+            return Result.success(result)
+        } catch (e: Exception) {
+            lastException = e
+            if (attempt < maxAttempts - 1) {
+                logger.info("Attempt ${attempt + 1} failed: ${e.message}. Retrying in ${currentDelay}ms...")
+                delay(currentDelay)
+                currentDelay = (currentDelay * factor).toLong()
+            } else {
+                logger.info("Attempt ${attempt + 1} failed: ${e.message}. All attempts exhausted.")
+            }
+        }
+    }
+
+    // Return failure result after all attempts
+    return Result.failure(lastException ?: RuntimeException("Unknown error after $maxAttempts attempts"))
+}
 
 fun getFileFromInput(): String? {
     print("Введите путь к Excel файлу: ")
@@ -45,7 +91,7 @@ fun getFileFromInput(): String? {
 }
 
 fun extractAndFilterBolts(excelHandler: ExcelHandler, filePath: String): Array<String> {
-    val columnValues = excelHandler.getColumnData(filePath, 3) // 4th column has index 3
+    val columnValues = excelHandler.getColumnData(filePath, 3)
 
     val filteredValues = columnValues.filter { value ->
         value.trim().startsWith("Болт М") && value.trim().endsWith("ГОСТ 7805-70")
@@ -54,29 +100,103 @@ fun extractAndFilterBolts(excelHandler: ExcelHandler, filePath: String): Array<S
     return filteredValues.toTypedArray()
 }
 
+suspend fun createObjectsConcurrently(
+    polynomClient: PolynomClient,
+    parser: Parser,
+    groupId: GroupId,
+    items: List<String>,
+    concurrency: Int = 5,
+    delayBetweenBatches: Long = 1000L,
+    maxRetryAttempts: Int = 5,
+    initialRetryDelay: Long = 1000L,
+    retryFactor: Double = 2.0
+) = coroutineScope {
+    val channel = Channel<String>(Channel.UNLIMITED)
+    val semaphore = Semaphore(concurrency)
+    val failedItems = mutableListOf<String>()
+    val failedItemsMutex = kotlinx.coroutines.sync.Mutex()
+
+    // Launch a coroutine to feed items into the channel
+    launch {
+        items.forEach { channel.send(it) }
+        channel.close()
+    }
+
+    // Launch worker coroutines that consume from the channel
+    (1..concurrency).map { workerIndex ->
+        launch {
+            for (item in channel) {
+                semaphore.acquire()
+                val result = retry(
+                    maxAttempts = maxRetryAttempts,
+                    initialDelayMs = initialRetryDelay,
+                    factor = retryFactor
+                ) {
+                    withTimeout(60_000) {
+                        logger.doWithLogging("Create empty polynom objects", item = item) {
+                            polynomClient.element(
+                                CreateElementRequest(
+                                    groupId, name = ElementName(parser.parsePartData(item).toFormattedString())
+                                )
+                            )
+                        }
+                    }
+                }
+
+                if (result.isFailure) {
+                    failedItemsMutex.withLock {
+                        failedItems.add(item)
+                    }
+                    logger.error(
+                        "Failed to create polynom object after $maxRetryAttempts attempts for item: $item", t = result.exceptionOrNull()
+                    )
+                }
+
+                semaphore.release()
+                delay(delayBetweenBatches)
+            }
+        }
+    }.joinAll()
+
+    // Log all failed items after processing
+    if (failedItems.isNotEmpty()) {
+        logger.info("Items that failed to be processed after all retry attempts: ${failedItems.joinToString(", ")}")
+        println("\nСледующие элементы не были обработаны после всех попыток:")
+        failedItems.forEach { item ->
+            println("- $item")
+        }
+    } else {
+        logger.info("All items were successfully processed.")
+        println("\nВсе элементы были успешно обработаны.")
+    }
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
 suspend fun processBoltSpecifications(polynomClient: PolynomClient, parser: Parser) {
-    val filePath = getFileFromInput() ?: return
+    val filePath = getFileFromInput() ?: return // C:\Users\han\Desktop\Классификатор.xlsx
     val excelHandler = ExcelHandler()
     val groupId = GroupId(2866)
 
-
     try {
         val boltSpecifications = extractAndFilterBolts(excelHandler, filePath)
+        println("Элементов для обработки: ${boltSpecifications.size}")
 
-        if (boltSpecifications.isNotEmpty()) {
-            boltSpecifications.take(10).forEach { bolt ->
-                logger.doWithLogging("create empty polynom objects") {
-                    polynomClient.element(
-                        CreateElementRequest(
-                            groupId, name = ElementName(parser.parsePartData(bolt).toFormattedString())
-                        )
-                    )
-                }
-            }
-            println("Внесено 10 болтов")
-        } else {
-            println("Не найдено записей, соответствующих критериям: начинающихся с 'Болт М' и заканчивающихся 'ГОСТ 7805-70'")
-        }
+        createObjectsConcurrently(polynomClient, parser, groupId, boltSpecifications.toList())
+
+//        if (boltSpecifications.isNotEmpty()) {
+//            boltSpecifications.forEach { bolt ->
+//                logger.doWithLogging("create empty polynom objects") {
+//                    polynomClient.element(
+//                        CreateElementRequest(
+//                            groupId, name = ElementName(parser.parsePartData(bolt).toFormattedString())
+//                        )
+//                    )
+//                }
+//            }
+//            println("Внесено 10 болтов")
+//        } else {
+//            println("Не найдено записей, соответствующих критериям: начинающихся с 'Болт М' и заканчивающихся 'ГОСТ 7805-70'")
+//        }
     } catch (e: Exception) {
         println("Ошибка при обработке Excel файла: ${e.message}")
         e.printStackTrace()

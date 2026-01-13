@@ -1,36 +1,32 @@
 package com.khan366kos.parser.partlib
 
-import com.khan366kos.etlassistant.logging.logger
-
 class Parser {
-    private val parserLogger = logger("Parser")
     private val nonStandardizedCoatingCodes = setOf("05", "06", "11", "12")
 
-    suspend fun parsePartData(input: String): PartData {
-        return parserLogger.doWithLogging("parsePartData()") {
-            val coatingData = extractCoatingData(input)
-            val material = extractMaterial(input)
-            val strengthGrade = extractStrengthGrade(input)
-            val length = extractLength(input)
-            val threadDiameter = extractThreadDiameter(input)
-            val wrenchSize = extractWrenchSize(input, threadDiameter)
-            val threadPitch = extractThreadPitch(input, threadDiameter)
+    fun parsePartData(input: String): PartData {
+        val coatingData = extractCoatingData(input)
+        val material = extractMaterial(input)
+        val strengthGrade = extractStrengthGrade(input)
+        val length = extractLength(input)
+        val threadDiameter = extractThreadDiameter(input)
+        val wrenchSize = extractWrenchSize(input, threadDiameter)
+        val threadPitch = extractThreadPitch(input, threadDiameter)
 
-            val partData = PartData(
-                coatingThickness = coatingData.thickness,
-                coating = coatingData.coating,
-                material = material,
-                length = length,
-                threadDiameter = threadDiameter,
-                wrenchSize = wrenchSize,
-                threadPitch = threadPitch,
-                strengthGrade = strengthGrade
-            )
+        val partData = PartData(
+            coatingThickness = coatingData.thickness,
+            coating = coatingData.coating,
+            material = material,
+            length = length,
+            threadDiameter = threadDiameter,
+            wrenchSize = wrenchSize,
+            threadPitch = threadPitch,
+            strengthGrade = strengthGrade
+        )
 
-            println("$input -> ${partData.toFormattedString()}")
-            partData
-        }
+        println("$input -> ${partData.toFormattedString()}")
+        return partData
     }
+
 
     private fun extractCoatingData(input: String): CoatingData {
         val gostIndex = input.indexOf(" ГОСТ")
@@ -74,7 +70,7 @@ class Parser {
     }
 
     private fun extractLength(input: String): String {
-        val pattern = Regex("""-6gx([^.]+)\.""")
+        val pattern = Regex("""-6g[хx](\d+)\.""")
         return pattern.find(input)?.groupValues?.getOrNull(1) ?: ""
     }
 

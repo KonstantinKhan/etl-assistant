@@ -13,7 +13,7 @@ val AuthPlugin = createClientPlugin("AuthPlugin", ::AuthPluginConfig) {
     val baseUrl = pluginConfig.baseUrl
 
     on(Send) { request ->
-        if (!request.url.toString().contains("login/sign-in")) {
+        if (!request.url.toString().contains("login/sign-in") && !request.url.toString().contains("storage-definitions")) {
 
             val token = tokenManager.getValidToken(client, baseUrl)
 

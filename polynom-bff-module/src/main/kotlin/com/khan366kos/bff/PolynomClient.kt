@@ -1,5 +1,8 @@
 package com.khan366kos.bff
 
+import com.khan366kos.etl.assistant.transport.models.ReferenceTransport
+import com.khan366kos.etl.assistant.transport.models.StorageDefinitionTransport
+import com.khan366kos.etl.assistant.transport.models.UserTransport
 import com.khan366kos.bff.auth.AuthPlugin
 import com.khan366kos.bff.auth.TokenManager
 import com.khan366kos.common.models.business.ObjectInfo
@@ -9,6 +12,9 @@ import com.khan366kos.common.responses.PropertyOwnerRespose
 import com.khan366kos.common.requests.CreateElementRequest
 import com.khan366kos.common.requests.PropertyAssignmentRequest
 import com.khan366kos.common.requests.PropertyOwnerRequest
+import com.khan366kos.etl.assistant.transport.models.ElementCatalogTransport
+import com.khan366kos.etl.assistant.transport.models.ElementGroupTransport
+import com.khan366kos.etl.assistant.transport.models.IdentifiableObjectTransport
 import io.ktor.client.*
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.*
@@ -37,7 +43,7 @@ class PolynomClient {
 
         private val SERVER_HOST = System.getenv("SERVER_HOST") ?: System.getProperty("server.host", DEFAULT_HOST)
         private val SERVER_PORT = System.getenv("SERVER_PORT") ?: System.getProperty("server.port", DEFAULT_PORT)
-        private val BASE_URL = "http://$SERVER_HOST:$SERVER_PORT"
+        private val BASE_URL = "https://$SERVER_HOST:$SERVER_PORT"
     }
 
     private val tokenManager = TokenManager()
@@ -48,7 +54,7 @@ class PolynomClient {
         }
         install(DefaultRequest) {
             url {
-                protocol = URLProtocol.HTTP
+                protocol = URLProtocol.HTTPS
                 host = SERVER_HOST
                 port = SERVER_PORT.toInt()
                 path("$BASE_API_PATH/")
@@ -68,12 +74,27 @@ class PolynomClient {
         }
     }
 
-    suspend fun allReference(): String {
-        return client.get("reference/all").bodyAsText()
+    suspend fun storageDefinitions(): ArrayList<StorageDefinitionTransport> =
+        client.get("login/storage-definitions").body()
+
+    suspend fun currentUserInfo(): UserTransport = client.get("login/current-user-info").body()
+
+    suspend fun getAll(): List<ReferenceTransport> {
+        return client.post("reference/get-all").body()
     }
 
+    suspend fun getByReference(request: IdentifiableObjectTransport): Array<ElementCatalogTransport> =
+        client.post("element-catalog/get-by-reference") {
+            setBody(request)
+        }.body()
+
+    suspend fun getByCatalog(request: IdentifiableObjectTransport): List<ElementGroupTransport> =
+        client.post("element-group/get-by-catalog") {
+            setBody(request)
+        }.body()
+
     suspend fun element(request: CreateElementRequest): ElementResponse {
-        return client.post("element") {
+        return client.post("element/create") {
             setBody(request)
         }.body()
     }

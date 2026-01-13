@@ -23,3 +23,8 @@ kotlin {
 application {
     mainClass.set("khan366kos.excel.handler.GreetingMainKt")
 }
+
+tasks.test {
+    useJUnitPlatform()
+    failOnNoDiscoveredTests = false
+}

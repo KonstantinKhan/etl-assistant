@@ -8,6 +8,7 @@ include("common-models-module")
 include("excel-module")
 include("logging-module")
 include("classifier-structure-module")
+include("transport-models")
 
 dependencyResolutionManagement {
     repositories {

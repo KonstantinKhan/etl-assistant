@@ -1,34 +1,25 @@
 plugins {
-    kotlin("jvm") version "2.2.20"
-    application
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.flyway)
 }
-
-group = "com.khan366kos"
-version = "0.0.1"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation(libs.poi)
     implementation(projects.commonModelsModule)
-    implementation(projects.databaseModule)
     implementation(libs.exposed.core)
     implementation(libs.exposed.dao)
     implementation(libs.exposed.jdbc)
+    implementation(libs.hikaricp)
     implementation(libs.sqlite.jdbc)
     implementation(libs.flyway.core)
 
-    testImplementation(kotlin("test"))
 }
 
 kotlin {
     jvmToolchain(21)
-}
-
-application {
-    mainClass.set("MainKt")
 }
 
 tasks.test {

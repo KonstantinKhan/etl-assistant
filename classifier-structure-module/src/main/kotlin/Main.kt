@@ -1,12 +1,30 @@
 import com.khan366kos.common.models.classifier.ClassifierGroup
 import com.khan366kos.common.models.classifier.RawClassifierGroup
+import com.khan366kos.database.dao.ClassifierDao
+import com.khan366kos.repository.ClassifierGroupRepositoryImpl
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import org.flywaydb.core.Flyway
+import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.FileInputStream
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 @OptIn(ExperimentalUuidApi::class)
 fun main() {
+    val dbUrl = "jdbc:sqlite:./classifier_database.db"
+    val db = Database.connect(dbUrl, "org.sqlite.JDBC")
+
+    val flyway = Flyway.configure()
+        .dataSource(dbUrl, null, null)
+        .load()
+    flyway.migrate()
+
+    val classifierDao = ClassifierDao()
+    val repository = ClassifierGroupRepositoryImpl(classifierDao)
+
+
+    // Блок для заливки данных из файла в SQLite
     val filePath = "C:\\Users\\han\\Desktop\\classifier-structure.xlsx"
     val workbook = XSSFWorkbook(FileInputStream(filePath))
     workbook.use { workbook ->
@@ -21,7 +39,7 @@ fun main() {
                     max = row.getCell(2).stringCellValue.replace(".", "").replace(" ", "").takeIf { it.isNotEmpty() }
                         ?.toLong() ?: 0L,
                     level = row.getCell(3).numericCellValue.toLong(),
-                    name = row.getCell(4).stringCellValue
+                    name = row.getCell(4).stringCellValue.trim()
                 )
             }
         val groups = rawGroups.map { rawGroup ->
@@ -35,7 +53,12 @@ fun main() {
                 childsId = childsId(rawGroup.level, rawGroup.min, rawGroup.max, rawGroups),
             )
         }
-        println(findGroupNameById(101021516100027951, groups))
+
+        transaction(db) {
+            repository.saveAll(groups)
+        }
+
+        println("Все группы классификаторов успешно сохранены в базе данных.")
     }
 }
 

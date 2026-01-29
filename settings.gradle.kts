@@ -9,6 +9,7 @@ include("excel-module")
 include("logging-module")
 include("classifier-structure-module")
 include("transport-models")
+include("database-module")
 
 dependencyResolutionManagement {
     repositories {

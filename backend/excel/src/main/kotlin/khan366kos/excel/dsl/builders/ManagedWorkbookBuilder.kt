@@ -11,7 +11,7 @@ class ManagedWorkbookBuilder {
     var path: String? = null
     private val actions: MutableList<ManagedWorkbookAction> = mutableListOf()
 
-    fun action(block: ManagedWorkbookAction) {
+    internal fun action(block: ManagedWorkbookAction) {
         actions.add(block)
     }
 

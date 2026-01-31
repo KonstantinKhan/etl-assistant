@@ -1,6 +1,9 @@
 package khan366kos.excel
 
 import khan366kos.excel.mapper.toEtl
+import khan366kos.excel.models.EtlWorkbook
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.InputStream
@@ -8,7 +11,10 @@ import java.nio.file.Files
 import java.nio.file.Paths
 
 sealed class ManagedWorkbookResult {
-    data class Success(internal val workbook: ManagedWorkbook) : ManagedWorkbookResult()
+    data class Success(
+        internal val workbook: ManagedWorkbook,
+        val etlWorkbook: EtlWorkbook,
+    ) : ManagedWorkbookResult()
     data class Failure(val exception: Exception) : ManagedWorkbookResult()
 }
 
@@ -29,15 +35,24 @@ class ManagedWorkbook private constructor(
 
     internal suspend fun etlSheets() = sheets().map { sheet -> sheet.toEtl() }
 
-    internal fun workbook(): XSSFWorkbook = workbook
-
     companion object {
-        internal fun open(path: String): ManagedWorkbookResult {
-            val inputStream: InputStream = Files.newInputStream(Paths.get(path))
+        internal suspend fun open(path: String): ManagedWorkbookResult {
+            val inputStream: InputStream = withContext(Dispatchers.IO) {
+                Files.newInputStream(Paths.get(path))
+            }
             return try {
-                ManagedWorkbookResult.Success(ManagedWorkbook(XSSFWorkbook(inputStream), inputStream))
+                val xssfWorkbook = XSSFWorkbook(inputStream)
+                val managedWorkbook = ManagedWorkbook(xssfWorkbook, inputStream)
+                val etlWorkbook = xssfWorkbook.toEtl()
+
+                ManagedWorkbookResult.Success(
+                    workbook = managedWorkbook,
+                    etlWorkbook = etlWorkbook
+                )
             } catch (e: Exception) {
-                inputStream.close()
+                withContext(Dispatchers.IO) {
+                    inputStream.close()
+                }
                 ManagedWorkbookResult.Failure(e)
             }
         }

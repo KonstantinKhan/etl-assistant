@@ -90,15 +90,15 @@ fun getFileFromInput(): String? {
     return filePath
 }
 
-fun extractAndFilterBolts(excelHandler: ExcelHandler, filePath: String): Array<String> {
-    val columnValues = excelHandler.getColumnData(filePath, 3)
-
-    val filteredValues = columnValues.filter { value ->
-        value.trim().startsWith("Болт М") && value.trim().endsWith("ГОСТ 7805-70")
-    }
-
-    return filteredValues.toTypedArray()
-}
+//fun extractAndFilterBolts(excelHandler: ExcelHandler, filePath: String): Array<String> {
+//    val columnValues = excelHandler.getColumnData(filePath, 3)
+//
+//    val filteredValues = columnValues.filter { value ->
+//        value.trim().startsWith("Болт М") && value.trim().endsWith("ГОСТ 7805-70")
+//    }
+//
+//    return filteredValues.toTypedArray()
+//}
 
 suspend fun createObjectsConcurrently(
     polynomClient: PolynomClient,
@@ -132,15 +132,15 @@ suspend fun createObjectsConcurrently(
                     initialDelayMs = initialRetryDelay,
                     factor = retryFactor
                 ) {
-                    withTimeout(60_000) {
-                        logger.doWithLogging("Create empty polynom objects", item = item) {
-                            polynomClient.element(
-                                CreateElementRequest(
-                                    groupId, name = ElementName(parser.parsePartData(item).toFormattedString())
-                                )
-                            )
-                        }
-                    }
+//                    withTimeout(60_000) {
+//                        logger.doWithLogging("Create empty polynom objects", item = item) {
+//                            polynomClient.element(
+//                                CreateElementRequest(
+//                                    groupId, name = ElementName(parser.parsePartData(item).toFormattedString())
+//                                )
+//                            )
+//                        }
+//                    }
                 }
 
                 if (result.isFailure) {
@@ -174,14 +174,14 @@ suspend fun createObjectsConcurrently(
 @OptIn(ExperimentalCoroutinesApi::class)
 suspend fun processBoltSpecifications(polynomClient: PolynomClient, parser: Parser) {
     val filePath = getFileFromInput() ?: return // C:\Users\han\Desktop\Классификатор.xlsx
-    val excelHandler = ExcelHandler()
+//    val excelHandler = ExcelHandler()
     val groupId = GroupId(2866)
 
     try {
-        val boltSpecifications = extractAndFilterBolts(excelHandler, filePath)
-        println("Элементов для обработки: ${boltSpecifications.size}")
+//        val boltSpecifications = extractAndFilterBolts(excelHandler, filePath)
+//        println("Элементов для обработки: ${boltSpecifications.size}")
 
-        createObjectsConcurrently(polynomClient, parser, groupId, boltSpecifications.toList())
+//        createObjectsConcurrently(polynomClient, parser, groupId, boltSpecifications.toList())
 
 //        if (boltSpecifications.isNotEmpty()) {
 //            boltSpecifications.forEach { bolt ->
@@ -256,7 +256,7 @@ suspend fun getAndShowSheetNames(polynomClient: PolynomClient) {
 fun main(): Unit = runBlocking {
     val polynomClient: PolynomClient = createSimpleBffClient()
     val parser = Parser()
-    val excelHandler = ExcelHandler()
+//    val excelHandler = ExcelHandler()
 
     var continueExecution = true
     while (continueExecution) {
@@ -298,9 +298,9 @@ fun main(): Unit = runBlocking {
 
                 parseBolts.forEach { println(it) }
 
-                val sheets = excelHandler.getAllSheetNames("C:\\Users\\han\\Desktop\\Классификатор.xlsx")
+//                val sheets = excelHandler.getAllSheetNames("C:\\Users\\han\\Desktop\\Классификатор.xlsx")
                 println("\nЛисты в тестовом файле:")
-                sheets.forEach { println(it) }
+//                sheets.forEach { println(it) }
             }
 
             "3" -> {

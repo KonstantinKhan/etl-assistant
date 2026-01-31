@@ -4,9 +4,9 @@ import khan366kos.excel.dsl.function.useManagedWorkbook
 import kotlinx.coroutines.runBlocking
 
 fun main(): Unit = runBlocking {
-    val filePath = "/Users/khan/Projects/etl-assistant/backend/excel/src/main/resources/Классификатор.xlsx"
+    val filePath = "/Users/khan/Projects/etl-assistant/backend/excel/src/main/resources/Book.xlsx"
 
-    useManagedWorkbook {
+    val result = useManagedWorkbook {
         path = filePath
         action {
             println(etlSheets())

@@ -9,7 +9,11 @@ fun Sheet.headers(): List<String> = first().toList().map { cell -> cell.stringCe
 
 suspend fun Sheet.entriesSize(): Int = withContext(Dispatchers.IO) {
     val totalRows = this@entriesSize.lastRowNum + 1
-    val chunkCount = totalRows / 2000
+    val chunkCount = when {
+        totalRows > 4000 -> totalRows / 2000
+        totalRows < 100 -> 1
+        else -> 4
+    }
 
     val chunkSize = if (totalRows > 0) ceil(totalRows.toDouble() / chunkCount).toInt() else 0
 
@@ -31,5 +35,5 @@ suspend fun Sheet.entriesSize(): Int = withContext(Dispatchers.IO) {
 
     val totalCount = deferredResults.awaitAll().sum()
 
-    return@withContext totalCount
+    return@withContext totalCount - 1
 }

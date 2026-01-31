@@ -4,17 +4,15 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.commonModelsModule)
+    implementation(projects.shared.commonModels)
     implementation(projects.loggingModule)
     implementation(projects.polynomBffModule)
     implementation(projects.parserModule)
-    implementation(projects.excelModule)
-    implementation(projects.transportModels)
+    implementation(projects.backend.excel)
+    implementation(projects.shared.transportKmp)
 
     implementation(libs.kotlinx.coroutines.core)
 
-    testImplementation(libs.kotest)
-    testImplementation(libs.kotest.runner)
 }
 
 kotlin {

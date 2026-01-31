@@ -4,8 +4,8 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.commonModelsModule)
-    implementation(projects.transportModels)
+    implementation(projects.shared.commonModels)
+    implementation(projects.shared.transportKmp)
 
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)
@@ -16,8 +16,6 @@ dependencies {
 
     implementation(libs.logging)
 
-    testImplementation(libs.kotest)
-    testImplementation(libs.kotest.runner)
 }
 
 tasks.test {

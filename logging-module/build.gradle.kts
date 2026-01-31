@@ -4,8 +4,6 @@ plugins {
 
 dependencies {
     implementation(libs.logback.classic)
-    testImplementation(libs.kotest)
-    testImplementation(libs.kotest.runner)
 }
 
 tasks.test {

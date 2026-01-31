@@ -8,8 +8,6 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.poi)
 
-    testImplementation(libs.kotest)
-    testImplementation(libs.kotest.runner)
 }
 
 tasks.test {

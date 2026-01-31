@@ -16,7 +16,6 @@ import com.khan366kos.common.requests.PropertyAssignmentRequest
 import com.khan366kos.common.requests.PropertyValueAssignment
 import com.khan366kos.etlassistant.logging.logger
 import com.khan366kos.parser.partlib.Parser
-import khan366kos.excel.handler.ExcelHandler
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.coroutineScope

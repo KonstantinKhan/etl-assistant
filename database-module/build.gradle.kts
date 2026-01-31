@@ -8,7 +8,7 @@ repositories {
 }
 
 dependencies {
-    implementation(projects.commonModelsModule)
+    implementation(projects.shared.commonModels)
     implementation(libs.exposed.core)
     implementation(libs.exposed.dao)
     implementation(libs.exposed.jdbc)

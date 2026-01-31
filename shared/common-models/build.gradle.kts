@@ -6,8 +6,6 @@ plugins {
 dependencies {
     implementation(libs.kotlinx.serialization.json)
 
-    testImplementation(libs.kotest)
-    testImplementation(libs.kotest.runner)
 }
 
 tasks.test {

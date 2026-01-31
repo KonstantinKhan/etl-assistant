@@ -12,7 +12,7 @@ repositories {
 
 dependencies {
     implementation(libs.poi)
-    implementation(projects.commonModelsModule)
+    implementation(projects.shared.commonModels)
     implementation(projects.databaseModule)
     implementation(libs.exposed.core)
     implementation(libs.exposed.dao)

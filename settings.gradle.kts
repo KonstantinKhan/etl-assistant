@@ -1,14 +1,14 @@
 rootProject.name = "etl-assistant"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
+include(":shared:transport-kmp")
+include(":shared:common-models")
 include("parser-module")
 include("console-app-module")
 include("polynom-bff-module")
-include("common-models-module")
-include("excel-module")
+include(":backend:excel")
 include("logging-module")
 include("classifier-structure-module")
-include("transport-models")
 include("database-module")
 
 dependencyResolutionManagement {
@@ -16,3 +16,6 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+include("backend")
+include("shared")
+include("frontend")

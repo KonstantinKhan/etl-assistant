@@ -6,3 +6,7 @@ plugins {
 dependencies {
     implementation(libs.kotlinx.serialization.json)
 }
+
+kotlin {
+    jvmToolchain(21)
+}

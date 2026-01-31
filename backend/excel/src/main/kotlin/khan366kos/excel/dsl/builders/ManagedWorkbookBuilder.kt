@@ -15,7 +15,7 @@ class ManagedWorkbookBuilder {
         actions.add(block)
     }
 
-    fun build(): ManagedWorkbookResult {
+    suspend fun build(): ManagedWorkbookResult {
         val path = path ?: return ManagedWorkbookResult.Failure(IllegalArgumentException("Path must be specified"))
 
         return when (val result = ManagedWorkbook.open(path)) {

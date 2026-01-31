@@ -1,5 +1,9 @@
 package khan366kos.excel
 
+import khan366kos.excel.mapper.toEtl
+import khan366kos.excel.models.EtlSheet
+import khan366kos.excel.models.simple.EtlTableHeader
+import khan366kos.excel.models.simple.EtlSheetTitle
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.InputStream
@@ -16,6 +20,8 @@ class ManagedWorkbook private constructor(
     private val inputStream: InputStream,
 ) : AutoCloseable {
 
+    private val etlSheets: MutableList<EtlSheet> = mutableListOf()
+
     override fun close() {
         inputStream.use {
             workbook.close()
@@ -25,6 +31,8 @@ class ManagedWorkbook private constructor(
     internal fun sheets(): List<Sheet> = (0 until workbook.numberOfSheets).map { sheetNumber ->
         workbook.getSheetAt(sheetNumber)
     }
+
+    internal suspend fun etlSheets() = sheets().map { sheet -> sheet.toEtl() }
 
     internal fun workbook(): XSSFWorkbook = workbook
 

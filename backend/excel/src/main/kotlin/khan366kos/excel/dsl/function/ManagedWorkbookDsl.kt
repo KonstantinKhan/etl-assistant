@@ -5,5 +5,5 @@ import khan366kos.excel.dsl.builders.ManagedWorkbookBuilder
 
 @DslMarker
 annotation class ManagedWorkbookDsl
-fun useManagedWorkbook(block: ManagedWorkbookBuilder.() -> Unit): ManagedWorkbookResult =
+suspend fun useManagedWorkbook(block: ManagedWorkbookBuilder.() -> Unit): ManagedWorkbookResult =
     ManagedWorkbookBuilder().apply(block).build()

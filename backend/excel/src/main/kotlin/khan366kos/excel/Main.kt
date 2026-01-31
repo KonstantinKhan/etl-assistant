@@ -9,10 +9,9 @@ fun main(): Unit = runBlocking {
     useManagedWorkbook {
         path = filePath
         action {
-            println(sheets().size)
+            println(etlSheets())
         }
     }
-
 
 
 //    when (val result = ManagedWorkbook.open(path = filePath)) {
@@ -24,13 +23,6 @@ fun main(): Unit = runBlocking {
 //                    .map { sheetNumber ->
 //                        workbook.getSheetAt(sheetNumber)
 //                    }
-//
-//                var count = 0
-//                for (row in sheets.first()) {
-//                    if (row.toList().isNotEmpty())
-//                        count++
-//                }
-//                println(count)
 //
 //                val headers = sheets.map { sheet ->
 //                    Pair(

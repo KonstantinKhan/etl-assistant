@@ -1,8 +1,8 @@
 [versions]
 exposed = "0.61.0"
 h2 = "2.3.232"
-kotlin = "2.2.20"
-ktor = "3.3.1"
+kotlin = "2.3.0"
+ktor = "3.4.0"
 logback = "1.5.26"
 postgres = "42.7.8"
 elasticsearch = "9.0.1"
@@ -13,6 +13,11 @@ hikaricp = "5.0.1"
 sqlite-jdbc = "3.42.0.0"
 flyway = "9.22.3"
 log4j-api = "2.25.3"
+kotlin-react = "2026.1.13-19.2.3"
+kotlin-react-dom = "2026.1.13-19.2.3"
+kotlin-emotion = "2026.1.14-11.14.0"
+kotlin-mui-material = "2026.1.15-5.18.0"
+emotion-styled = "11.14.1"
 
 [libraries]
 ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
@@ -55,6 +60,13 @@ hikaricp = { module = "com.zaxxer:HikariCP", version.ref = "hikaricp" }
 sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlite-jdbc" }
 flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
 
+kotlin-react = { module = "org.jetbrains.kotlin-wrappers:kotlin-react", version.ref = "kotlin-react" }
+kotlin-react-dom = { module = "org.jetbrains.kotlin-wrappers:kotlin-react-dom", version.ref = "kotlin-react-dom" }
+kotlin-react-core = { module = "org.jetbrains.kotlin-wrappers:kotlin-react-core", version.ref = "kotlin-react" }
+kotlin-emotion-react = { module = "org.jetbrains.kotlin-wrappers:kotlin-emotion-react", version.ref = "kotlin-emotion" }
+kotlin-mui-material = { module = "org.jetbrains.kotlin-wrappers:kotlin-mui-material", version.ref = "kotlin-mui-material"}
+
+
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
@@ -62,3 +74,5 @@ kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization"
 flyway = { id = "org.flywaydb.flyway", version.ref = "flyway" }
 
 kotest = { id = "io.kotest", version.ref = "kotest" }
+
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

@@ -19,3 +19,4 @@ dependencyResolutionManagement {
 include("backend")
 include("shared")
 include("frontend")
+include("frontend:kotlin-react-app")

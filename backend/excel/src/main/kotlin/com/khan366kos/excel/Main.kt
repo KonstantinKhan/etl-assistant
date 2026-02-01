@@ -1,6 +1,6 @@
-package khan366kos.excel
+package com.khan366kos.excel
 
-import khan366kos.excel.dsl.function.useManagedWorkbook
+import com.khan366kos.excel.dsl.function.useManagedWorkbook
 import kotlinx.coroutines.runBlocking
 
 fun main(): Unit = runBlocking {

@@ -1,7 +1,7 @@
-package khan366kos.excel.dsl.function
+package com.khan366kos.excel.dsl.function
 
-import khan366kos.excel.ManagedWorkbookResult
-import khan366kos.excel.dsl.builders.ManagedWorkbookBuilder
+import com.khan366kos.excel.ManagedWorkbookResult
+import com.khan366kos.excel.dsl.builders.ManagedWorkbookBuilder
 
 @DslMarker
 annotation class ManagedWorkbookDsl

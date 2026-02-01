@@ -1,9 +1,9 @@
-package khan366kos.excel.dsl.builders
+package com.khan366kos.excel.dsl.builders
 
-import khan366kos.excel.ManagedWorkbook
-import khan366kos.excel.ManagedWorkbookResult
-import khan366kos.excel.dsl.function.ManagedWorkbookDsl
-import khan366kos.excel.types.ManagedWorkbookAction
+import com.khan366kos.excel.ManagedWorkbook
+import com.khan366kos.excel.ManagedWorkbookResult
+import com.khan366kos.excel.dsl.function.ManagedWorkbookDsl
+import com.khan366kos.excel.types.ManagedWorkbookAction
 import kotlin.use
 
 @ManagedWorkbookDsl

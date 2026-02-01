@@ -1,4 +1,4 @@
-package khan366kos.excel
+package com.khan366kos.excel
 
 import io.kotest.core.spec.style.ShouldSpec
 

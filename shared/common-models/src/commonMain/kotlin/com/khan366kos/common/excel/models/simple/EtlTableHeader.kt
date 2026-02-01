@@ -1,4 +1,4 @@
-package khan366kos.excel.models.simple
+package com.khan366kos.common.excel.models.simple
 
 @JvmInline
 value class EtlTableHeader(private val value: String) {

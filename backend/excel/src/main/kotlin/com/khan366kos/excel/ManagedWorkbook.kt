@@ -1,7 +1,7 @@
-package khan366kos.excel
+package com.khan366kos.excel
 
-import khan366kos.excel.mapper.toEtl
-import khan366kos.excel.models.EtlWorkbook
+import com.khan366kos.excel.mapper.toEtl
+import com.khan366kos.common.excel.models.EtlWorkbook
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.apache.poi.ss.usermodel.Sheet
@@ -12,8 +12,8 @@ import java.nio.file.Paths
 
 sealed class ManagedWorkbookResult {
     data class Success(
-        internal val workbook: ManagedWorkbook,
-        val etlWorkbook: EtlWorkbook,
+        internal val workbook: com.khan366kos.excel.ManagedWorkbook,
+        val etlWorkbook: com.khan366kos.common.excel.models.EtlWorkbook,
     ) : ManagedWorkbookResult()
     data class Failure(val exception: Exception) : ManagedWorkbookResult()
 }
@@ -36,7 +36,7 @@ class ManagedWorkbook private constructor(
     internal suspend fun etlSheets() = sheets().map { sheet -> sheet.toEtl() }
 
     companion object {
-        internal suspend fun open(path: String): ManagedWorkbookResult {
+        internal suspend fun open(path: String): com.khan366kos.excel.ManagedWorkbookResult {
             val inputStream: InputStream = withContext(Dispatchers.IO) {
                 Files.newInputStream(Paths.get(path))
             }

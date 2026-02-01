@@ -15,8 +15,8 @@ The project follows a modular architecture. Below is an overview of the modules:
 | Module Name                               | Description                                                     | Docs                                                     |
 |-------------------------------------------|-----------------------------------------------------------------|----------------------------------------------------------|
 | `common-models`                           | Shared data models                                              | [common-models.md](docs/modules/shared/common-models.md) |
+| `excel`                                   | Excel file handler                                              | [excel](/docs/modules/backend/excel.md)                  |
 | [console-app-module/](console-app-module) | Console application entry point                                 |                                                          |
-| [excel-module/](excel-module)             | Excel file processing functionality                             |                                                          |
 | [logging-module/](logging-module)         | Logging utilities and configurations                            |                                                          |
 | [parser-module/](parser-module)           | Provides parsing functionalities.                               | [parser-module.md](docs/modules/parser-module.md)        |
 | [polynom-bff-module/](polynom-bff-module) | Backend-for-frontend (BFF) module for polynom-related services. |                                                          |

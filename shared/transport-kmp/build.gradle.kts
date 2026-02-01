@@ -1,12 +1,15 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlin.plugin.serialization)
 }
 
-dependencies {
-    implementation(libs.kotlinx.serialization.json)
-}
-
 kotlin {
-    jvmToolchain(21)
+    js(IR) {}
+    jvm()
+
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.kotlinx.serialization.json)
+        }
+    }
 }

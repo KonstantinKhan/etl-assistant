@@ -4,15 +4,16 @@ plugins {
 }
 
 dependencies {
+    implementation(libs.kotlinx.coroutines.core)
+
     implementation(projects.shared.commonModels)
+    implementation(projects.shared.transportKmp)
+
+    implementation(projects.backend.etlExcelService)
+
     implementation(projects.loggingModule)
     implementation(projects.polynomBffModule)
     implementation(projects.parserModule)
-    implementation(projects.backend.excel)
-    implementation(projects.shared.transportKmp)
-
-    implementation(libs.kotlinx.coroutines.core)
-
 }
 
 kotlin {

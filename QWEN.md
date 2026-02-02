@@ -12,15 +12,15 @@ This tool is designed to help with Extract, Transform, and Load processes.
 
 The project follows a modular architecture. Below is an overview of the modules:
 
-| Module Name                               | Description                                                     | Docs                                                     |
-|-------------------------------------------|-----------------------------------------------------------------|----------------------------------------------------------|
-| `common-models`                           | Shared data models                                              | [common-models.md](docs/modules/shared/common-models.md) |
-| `excel`                                   | Excel file handler                                              | [excel](/docs/modules/backend/excel.md)                  |
-| [console-app-module/](console-app-module) | Console application entry point                                 |                                                          |
-| [logging-module/](logging-module)         | Logging utilities and configurations                            |                                                          |
-| [parser-module/](parser-module)           | Provides parsing functionalities.                               | [parser-module.md](docs/modules/parser-module.md)        |
-| [polynom-bff-module/](polynom-bff-module) | Backend-for-frontend (BFF) module for polynom-related services. |                                                          |
-| `transport-models`                        | Transport layer models                                          | [transport-models.md](docs/modules/transport-models.md)  |
+| Module Name                               | Description                                                     | Docs                                                      |
+|-------------------------------------------|-----------------------------------------------------------------|-----------------------------------------------------------|
+| `common-models`                           | Shared data models                                              | [common-models.md](/docs/modules/shared/common-models.md) |
+| `etl-excel-service`                       | Excel file handler                                              | [excel](/docs/modules/backend/excel.md)                   |
+| [console-app-module/](console-app-module) | Console application entry point                                 |                                                           |
+| [logging-module/](logging-module)         | Logging utilities and configurations                            |                                                           |
+| [parser-module/](parser-module)           | Provides parsing functionalities.                               | [parser-module.md](docs/modules/parser-module.md)         |
+| [polynom-bff-module/](polynom-bff-module) | Backend-for-frontend (BFF) module for polynom-related services. |                                                           |
+| `transport-models`                        | Transport layer models                                          | [transport-models.md](docs/modules/transport-models.md)   |
 
 ## Development
 
@@ -35,14 +35,6 @@ The project follows a modular architecture. Below is an overview of the modules:
 For Windows, use:
 ```bash
 .\gradlew.bat test
-```
-
-**Note:** If you encounter test discovery issues with Kotest's ShouldSpec in specific modules, make sure the module's `build.gradle.kts` contains:
-
-```kotlin
-tasks.test {
-    useJUnitPlatform()
-}
 ```
 
 ### Running the Application
@@ -69,10 +61,12 @@ Follow the clean architecture principles and maintain consistent coding standard
 ## Project settings
 
 - The plugins section uses `alias` from [libs.versions.toml](/gradle/libs.versions.toml)
-- Don't use `implementation(kotlin("stdlib"))`, the standard library is used via
 
-```kotlin 
-plugins {
-    alias(libs.plugins.kotlin.jvm)
-}
- ```
+
+## Subagent
+
+Use subagents
+
+- `analyst`
+- `kotlin-developer`
+- `administrator`

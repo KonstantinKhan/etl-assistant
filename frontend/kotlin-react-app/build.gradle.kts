@@ -30,6 +30,15 @@ kotlin {
             implementation(libs.kotlin.mui.material)
 
             implementation(npm("@emotion/styled", libs.versions.emotion.styled.get()))
+
+            // HTTP client for backend requests
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.js)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+
+            // Shared models for transport
+            implementation(projects.shared.transportKmp)
         }
 
     }

@@ -12,8 +12,8 @@ import java.nio.file.Paths
 
 sealed class ManagedWorkbookResult {
     data class Success(
-        internal val workbook: com.khan366kos.etl.excel.service.ManagedWorkbook,
-        val etlWorkbook: com.khan366kos.common.excel.models.EtlWorkbook,
+        internal val workbook: ManagedWorkbook,
+        val etlWorkbook: EtlWorkbook,
     ) : ManagedWorkbookResult()
     data class Failure(val exception: Exception) : ManagedWorkbookResult()
 }

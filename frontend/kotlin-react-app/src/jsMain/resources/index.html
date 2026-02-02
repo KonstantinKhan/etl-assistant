@@ -7,6 +7,12 @@
 </head>
 <body>
     <div id="root"></div>
+
+    <script>
+        // Конфигурация: можно переопределить в production
+        window.API_BASE_URL = window.API_BASE_URL || 'http://localhost:8080';
+    </script>
+
     <script src="kotlin-react-app.js"></script>
 </body>
 </html>

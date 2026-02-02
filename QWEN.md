@@ -12,15 +12,14 @@ This tool is designed to help with Extract, Transform, and Load processes.
 
 The project follows a modular architecture. Below is an overview of the modules:
 
-| Module Name                               | Description                                                     | Docs                                                      |
-|-------------------------------------------|-----------------------------------------------------------------|-----------------------------------------------------------|
-| `common-models`                           | Shared data models                                              | [common-models.md](/docs/modules/shared/common-models.md) |
-| `etl-excel-service`                       | Excel file handler                                              | [excel](/docs/modules/backend/excel.md)                   |
-| [console-app-module/](console-app-module) | Console application entry point                                 |                                                           |
-| [logging-module/](logging-module)         | Logging utilities and configurations                            |                                                           |
-| [parser-module/](parser-module)           | Provides parsing functionalities.                               | [parser-module.md](docs/modules/parser-module.md)         |
-| [polynom-bff-module/](polynom-bff-module) | Backend-for-frontend (BFF) module for polynom-related services. |                                                           |
-| `transport-models`                        | Transport layer models                                          | [transport-models.md](docs/modules/transport-models.md)   |
+| Module Name           | Description                                 | Docs                                                            |
+|-----------------------|---------------------------------------------|-----------------------------------------------------------------|
+| `common-models`       | Shared data models                          | [common-models.md](/docs/modules/shared/common-models.md)       |
+| `etl-mapper`          | Mapping between domain and transport models | [mapper](/docs/modules/shared/etl-mapper.md)                    |
+| `transport-kmp`       | Transport layer models                      | [transport](/docs/modules/shared/transport-kmp.md)              |
+| `etl-excel-service`   | Excel file handler                          | [etl-excel-service](/docs/modules/backend/etl-excel-service.md) |
+| `etl-ktor-server-app` | Ktor server application                     | [server-app](/docs/modules/backend/etl-ktor-server-app.md)      |
+| `kotlin-react-app`    | Frontend React application                  | [react-app](/docs/modules/frontend/kotlin-react-app.md)         |
 
 ## Development
 
@@ -63,10 +62,10 @@ Follow the clean architecture principles and maintain consistent coding standard
 - The plugins section uses `alias` from [libs.versions.toml](/gradle/libs.versions.toml)
 
 
-## Subagent
+## Agents
 
-Use subagents
+Use agents to work with
 
-- `analyst`
-- `kotlin-developer`
-- `administrator`
+- `analyst` - The Task planning analyst
+- `kotlin-developer` - The main developer of Kotlin
+- `administrator` - The responsible for keeping documentation up-to-date

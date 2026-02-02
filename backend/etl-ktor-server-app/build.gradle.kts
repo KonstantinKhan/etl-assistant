@@ -22,8 +22,18 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation")
     implementation("io.ktor:ktor-serialization-kotlinx-json")
     implementation("io.ktor:ktor-server-netty")
-    implementation("ch.qos.logback:logback-classic:1.4.14")
+    implementation(libs.logback.classic)
 
+    implementation(projects.shared.transportKmp)
+    implementation(projects.shared.commonModels)
+    implementation(projects.shared.etlMapper)
+
+    implementation(projects.backend.etlExcelService)
+    implementation(project(":shared:etl-mapper"))
 
     testImplementation("io.ktor:ktor-server-test-host")
+}
+
+kotlin {
+    jvmToolchain(21)
 }

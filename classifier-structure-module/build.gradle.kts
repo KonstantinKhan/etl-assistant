@@ -12,7 +12,7 @@ repositories {
 
 dependencies {
     implementation(libs.poi)
-    implementation(projects.shared.commonModels)
+//    implementation(projects.shared.etlCommonModels)
     implementation(projects.databaseModule)
     implementation(libs.exposed.core)
     implementation(libs.exposed.dao)

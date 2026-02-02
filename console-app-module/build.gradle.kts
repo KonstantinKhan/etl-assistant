@@ -6,7 +6,7 @@ plugins {
 dependencies {
     implementation(libs.kotlinx.coroutines.core)
 
-    implementation(projects.shared.commonModels)
+    implementation(projects.shared.etlCommonModels)
     implementation(projects.shared.transportKmp)
 
     implementation(projects.backend.etlExcelService)

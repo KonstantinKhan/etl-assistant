@@ -25,7 +25,7 @@ dependencies {
     implementation(libs.logback.classic)
 
     implementation(projects.shared.transportKmp)
-    implementation(projects.shared.commonModels)
+    implementation(projects.shared.etlCommonModels)
     implementation(projects.shared.etlMapper)
 
     implementation(projects.backend.etlExcelService)

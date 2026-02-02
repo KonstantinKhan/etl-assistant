@@ -1,4 +1,4 @@
-# Common Models
+# ETL Common Models
 
 This module describes the domain models to be used in the application.
 
@@ -6,18 +6,18 @@ This module describes the domain models to be used in the application.
 
 ### Module
 
-[common-models](../../../shared/common-models)
+[etl-common-models](../../../shared/etl-common-models)
 
 ### Source code
 
-[src](../../../shared/common-models/src/commonMain/kotlin/com/khan366kos/common)
+[src](../../../shared/etl-common-models/src/commonMain/kotlin/com/khan366kos/common)
 
 ## Module Structure
 
 ### Folder Structure with Files
 
 ```
-shared/common-models/
+shared/etl-common-models/
 ├── build.gradle.kts
 ├── build/
 └── src/

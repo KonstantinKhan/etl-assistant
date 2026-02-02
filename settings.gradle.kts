@@ -4,7 +4,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(":shared")
 include(":shared:transport-kmp")
-include(":shared:common-models")
+include(":shared:etl-common-models")
 
 include(":backend")
 include(":backend:etl-excel-service")

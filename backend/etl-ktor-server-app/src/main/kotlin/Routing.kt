@@ -3,6 +3,7 @@ package com.khan366kos.etl.ktor.server.app
 import com.khan366kos.etl.excel.service.ManagedWorkbookResult
 import com.khan366kos.etl.excel.service.dsl.function.useManagedWorkbook
 import com.khan366kos.etl.mapper.toEtlWorkbookTransport
+import com.khan366kos.etl.polynom.bff.createSimpleBffClient
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
@@ -20,6 +21,23 @@ fun Application.configureRouting() {
             } as ManagedWorkbookResult.Success
 
             call.respond(managedWorkbook.etlWorkbook.toEtlWorkbookTransport())
+        }
+
+        get("/storage-definitions") {
+            try {
+                val polynomClient = createSimpleBffClient()
+                try {
+                    val storageDefinitions = polynomClient.storageDefinitions()
+                    call.respond(HttpStatusCode.OK, storageDefinitions)
+                } finally {
+                    polynomClient.close()
+                }
+            } catch (e: Exception) {
+                call.respond(
+                    HttpStatusCode.InternalServerError,
+                    mapOf("error" to "Ошибка получения storage definitions: ${e.message}")
+                )
+            }
         }
 
         post("/upload") {

@@ -42,7 +42,8 @@ class PolynomClient {
 
         private val SERVER_HOST = System.getenv("SERVER_HOST") ?: System.getProperty("server.host", DEFAULT_HOST)
         private val SERVER_PORT = System.getenv("SERVER_PORT") ?: System.getProperty("server.port", DEFAULT_PORT)
-        private val BASE_URL = "https://$SERVER_HOST:$SERVER_PORT"
+//        private val BASE_URL = "https://$SERVER_HOST:$SERVER_PORT"
+        private val BASE_URL = "https://delusively-altruistic-pangolin.cloudpub.ru:443"
     }
 
     private val tokenManager = TokenManager()
@@ -54,8 +55,10 @@ class PolynomClient {
         install(DefaultRequest) {
             url {
                 protocol = URLProtocol.HTTPS
-                host = SERVER_HOST
-                port = SERVER_PORT.toInt()
+//                host = SERVER_HOST
+                host = "delusively-altruistic-pangolin.cloudpub.ru"
+//                port = SERVER_PORT.toInt()
+                port = 443
                 path("$BASE_API_PATH/")
             }
             contentType(ContentType.Application.Json)

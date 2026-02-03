@@ -27,6 +27,7 @@ dependencies {
     implementation(projects.shared.etlTransportKmp)
     implementation(projects.shared.etlCommonModels)
     implementation(projects.shared.etlMapper)
+    implementation(projects.backend.etlPolynomBff)
 
     implementation(projects.backend.etlExcelService)
     implementation(project(":shared:etl-mapper"))

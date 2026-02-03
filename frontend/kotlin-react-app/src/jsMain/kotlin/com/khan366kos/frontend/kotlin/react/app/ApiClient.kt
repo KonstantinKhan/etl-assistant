@@ -1,6 +1,7 @@
 package com.khan366kos.frontend.kotlin.react.app
 
 import com.khan366kos.etl.assistant.transport.models.EtlWorkbookTransport
+import com.khan366kos.etl.assistant.transport.models.StorageDefinitionTransport
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -34,6 +35,10 @@ object ApiClient {
 
     suspend fun fetchSheets(): EtlWorkbookTransport {
         return httpClient.get("$baseUrl/sheets").body()
+    }
+
+    suspend fun fetchStorageDefinitions(): List<StorageDefinitionTransport> {
+        return httpClient.get("$baseUrl/storage-definitions").body()
     }
 
     suspend fun uploadFile(file: BrowserFile): EtlWorkbookTransport {

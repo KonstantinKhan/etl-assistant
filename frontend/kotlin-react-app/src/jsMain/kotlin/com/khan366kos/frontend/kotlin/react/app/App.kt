@@ -12,14 +12,17 @@ import web.cssom.*
 val App = FC<Props> {
 
     val viewModel = useMemo { WorkbookViewModel() }
+    val storageDefinitionsViewModel = useMemo { StorageDefinitionsViewModel() }
 
     val uiState = useCollectState(viewModel.state)
+    val storageDefinitionsState = useCollectState(storageDefinitionsViewModel.state)
 
     @Suppress("UNUSED_LAMBDA_EXPRESSION")
     useEffectOnce {
         ;
         {
             viewModel.cleanup()
+            storageDefinitionsViewModel.cleanup()
             ApiClient.close()
         }
     }
@@ -49,6 +52,14 @@ val App = FC<Props> {
             disabled = uiState is WorkbookUiState.Loading
             sx { marginBottom = 2.rem }
             +"Загрузить демо-файл"
+        }
+
+        Button {
+            variant = ButtonVariant.outlined
+            onClick = { storageDefinitionsViewModel.loadStorageDefinitions() }
+            disabled = storageDefinitionsState is StorageDefinitionsUiState.Loading
+            sx { marginBottom = 2.rem }
+            +"Загрузить Storage Definitions"
         }
 
         when (val state = uiState) {
@@ -81,6 +92,45 @@ val App = FC<Props> {
             is WorkbookUiState.Success -> {
                 SheetsDisplay {
                     workbook = state.workbook
+                }
+            }
+        }
+
+        // Storage Definitions Section
+        Box {
+            sx { marginTop = 4.rem }
+
+            when (val state = storageDefinitionsState) {
+                is StorageDefinitionsUiState.Initial -> {
+                    Typography {
+                        sx { color = Color("text.secondary") }
+                        +"Нажмите кнопку для загрузки Storage Definitions"
+                    }
+                }
+
+                is StorageDefinitionsUiState.Loading -> {
+                    Box {
+                        sx {
+                            display = Display.flex
+                            alignItems = AlignItems.center
+                            gap = 2.rem
+                        }
+                        CircularProgress()
+                        Typography { +"Загрузка Storage Definitions..." }
+                    }
+                }
+
+                is StorageDefinitionsUiState.Error -> {
+                    Alert {
+                        severity = AlertColor.error.toString()
+                        +"Ошибка: ${state.message}"
+                    }
+                }
+
+                is StorageDefinitionsUiState.Success -> {
+                    StorageDefinitionsDisplay {
+                        storageDefinitions = state.storageDefinitions
+                    }
                 }
             }
         }

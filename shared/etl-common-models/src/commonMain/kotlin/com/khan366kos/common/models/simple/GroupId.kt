@@ -5,7 +5,7 @@ import kotlin.jvm.JvmInline
 
 @JvmInline
 @Serializable
-value class GroupId(private val value: Int) {
+value class GroupId(val value: Int) {
     companion object {
         val NONE = GroupId(0)
     }

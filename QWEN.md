@@ -12,14 +12,15 @@ This tool is designed to help with Extract, Transform, and Load processes.
 
 The project follows a modular architecture. Below is an overview of the modules:
 
-| Module Name           | Description                                 | Docs                                                            |
-|-----------------------|---------------------------------------------|-----------------------------------------------------------------|
-| `etl-common-models`   | Shared data models                          | [etl-common-models.md](/docs/modules/shared/etl-common-models.md) |
-| `etl-mapper`          | Mapping between domain and transport models | [mapper](/docs/modules/shared/etl-mapper.md)                    |
-| `etl-transport-kmp`       | Transport layer models                      | [transport](/docs/modules/shared/etl-transport-kmp.md)              |
-| `etl-excel-service`   | Excel file handler                          | [etl-excel-service](/docs/modules/backend/etl-excel-service.md) |
-| `etl-ktor-server-app` | Ktor server application                     | [server-app](/docs/modules/backend/etl-ktor-server-app.md)      |
-| `kotlin-react-app`    | Frontend React application                  | [react-app](/docs/modules/frontend/kotlin-react-app.md)         |
+| Module Name           | Description                                    | Docs                                                                     |
+|-----------------------|------------------------------------------------|--------------------------------------------------------------------------|
+| `etl-common-models`   | Shared data models                             | [etl-common-models.md](/docs/modules/shared/etl-common-models/README.md) |
+| `etl-mapper`          | Mapping between domain and transport models    | [etl-mapper.md](/docs/modules/shared/etl-mapper/README.md)               |
+| `etl-transport-kmp`   | Transport layer models                         | [etl-transport-kmp.md](/docs/modules/shared/etl-transport-kmp/README.md) |
+| `etl-excel-service`   | Excel file handler                             | [etl-excel-service.md](/docs/modules/backend/etl-excel-service.md)       |
+| `etl-ktor-server-app` | Ktor server application                        | [etl-ktor-server-app.md](/docs/modules/backend/etl-ktor-server-app.md)   |
+| `etl-polynom-bff`     | Backend for Frontend layer for polynom service | [etl-polynom-bff.md](/docs/modules/backend/etl-polynom-bff.md)           |
+| `kotlin-react-app`    | Frontend React application                     | [kotlin-react-app.md](/docs/modules/frontend/kotlin-react-app.md)        |
 
 ## Development
 

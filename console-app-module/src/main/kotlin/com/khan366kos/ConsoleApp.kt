@@ -1,7 +1,7 @@
 package com.khan366kos
 
-import com.khan366kos.bff.PolynomClient
-import com.khan366kos.bff.createSimpleBffClient
+import com.khan366kos.etl.polynom.bff.PolynomClient
+import com.khan366kos.etl.polynom.bff.createSimpleBffClient
 import com.khan366kos.common.models.business.Identifier
 import com.khan366kos.common.models.business.InnerElement
 import com.khan366kos.common.models.simple.ElementName
@@ -10,8 +10,6 @@ import com.khan366kos.common.models.simple.ObjectId
 import com.khan366kos.common.models.simple.TypeId
 import com.khan366kos.common.models.values.StringPropertyValues
 import com.khan366kos.common.models.values.Values
-import com.khan366kos.common.requests.CreateElementRequest
-import com.khan366kos.common.requests.ParentGroup
 import com.khan366kos.common.requests.PropertyAssignmentRequest
 import com.khan366kos.common.requests.PropertyValueAssignment
 import com.khan366kos.etlassistant.logging.logger
@@ -24,7 +22,6 @@ import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withLock
-import kotlinx.coroutines.withTimeout
 import java.io.File
 
 val logger = logger("ConsoleApp")

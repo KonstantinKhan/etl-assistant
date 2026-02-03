@@ -12,7 +12,7 @@ dependencies {
     implementation(projects.backend.etlExcelService)
 
     implementation(projects.loggingModule)
-    implementation(projects.polynomBffModule)
+    implementation(projects.backend.etlPolynomBff)
     implementation(projects.parserModule)
 }
 

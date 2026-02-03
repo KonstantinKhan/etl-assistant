@@ -2,8 +2,10 @@ package com.khan366kos.etl.mapper
 
 import com.khan366kos.common.excel.models.EtlSheet
 import com.khan366kos.common.excel.models.EtlWorkbook
+import com.khan366kos.common.models.definitions.StorageDefinition
 import com.khan366kos.etl.assistant.transport.models.EtlSheetTransport
 import com.khan366kos.etl.assistant.transport.models.EtlWorkbookTransport
+import com.khan366kos.etl.assistant.transport.models.StorageDefinitionTransport
 
 fun EtlWorkbook.toEtlWorkbookTransport(): EtlWorkbookTransport {
     return EtlWorkbookTransport(
@@ -16,5 +18,12 @@ fun EtlSheet.toEtlSheetTransport(): EtlSheetTransport {
         title = this.title.asString(),
         headers = this.headers.map { it.asString() },
         entriesSize = this.entriesSize
+    )
+}
+
+fun StorageDefinition.toStorageDefinitionTransport(): StorageDefinitionTransport {
+    return StorageDefinitionTransport(
+        storageId = this.storageId,
+        displayName = this.displayName
     )
 }

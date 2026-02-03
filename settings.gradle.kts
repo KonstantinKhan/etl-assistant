@@ -3,8 +3,9 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 
 include(":shared")
-include(":shared:transport-kmp")
+include(":shared:etl-transport-kmp")
 include(":shared:etl-common-models")
+include(":shared:etl-mapper")
 
 include(":backend")
 include(":backend:etl-excel-service")
@@ -27,4 +28,3 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-include("shared:etl-mapper")

@@ -15,7 +15,7 @@ kotlin {
 
 dependencies {
     implementation(projects.shared.etlCommonModels)
-    implementation(project(":shared:transport-kmp"))
+    implementation(projects.shared.etlTransportKmp)
     testImplementation(kotlin("test"))
 }
 

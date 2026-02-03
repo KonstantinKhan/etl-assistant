@@ -24,7 +24,7 @@ dependencies {
     implementation("io.ktor:ktor-server-netty")
     implementation(libs.logback.classic)
 
-    implementation(projects.shared.transportKmp)
+    implementation(projects.shared.etlTransportKmp)
     implementation(projects.shared.etlCommonModels)
     implementation(projects.shared.etlMapper)
 

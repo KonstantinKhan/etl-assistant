@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     implementation(projects.shared.etlCommonModels)
-    implementation(projects.shared.transportKmp)
+    implementation(projects.shared.etlTransportKmp)
 
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)

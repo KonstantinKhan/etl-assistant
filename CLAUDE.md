@@ -16,7 +16,7 @@ The project follows a modular architecture. Below is an overview of the modules:
 |-----------------------|---------------------------------------------|-----------------------------------------------------------------|
 | `etl-common-models`   | Shared data models                          | [etl-common-models.md](/docs/modules/shared/etl-common-models.md) |
 | `etl-mapper`          | Mapping between domain and transport models | [mapper](/docs/modules/shared/etl-mapper.md)                    |
-| `transport-kmp`       | Transport layer models                      | [transport](/docs/modules/shared/transport-kmp.md)              |
+| `etl-transport-kmp`       | Transport layer models                      | [transport](/docs/modules/shared/etl-transport-kmp.md)              |
 | `etl-excel-service`   | Excel file handler                          | [etl-excel-service](/docs/modules/backend/etl-excel-service.md) |
 | `etl-ktor-server-app` | Ktor server application                     | [server-app](/docs/modules/backend/etl-ktor-server-app.md)      |
 | `kotlin-react-app`    | Frontend React application                  | [react-app](/docs/modules/frontend/kotlin-react-app.md)         |

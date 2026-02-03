@@ -1,21 +1,21 @@
-# Transport KMP module
+# ETL Transport KMP module
 
 ## Location
 
 ### Module
 
-[transport-kmp](../../../shared/transport-kmp)
+[etl-transport-kmp](../../../shared/etl-transport-kmp)
 
 ### Source code
 
-[src](../../../shared/transport-kmp/src/commonMain/kotlin/com/khan366kos/etl/assistant/transport/models)
+[src](../../../shared/etl-transport-kmp/src/commonMain/kotlin/com/khan366kos/etl/assistant/transport/models)
 
 ## Module Structure
 
 ### Folder Structure with Files
 
 ```
-shared/transport-kmp/
+shared/etl-transport-kmp/
 ├── build.gradle.kts
 ├── src/
 │   ├── commonMain/

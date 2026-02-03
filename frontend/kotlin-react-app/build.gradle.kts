@@ -38,7 +38,7 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
 
             // Shared models for transport
-            implementation(projects.shared.transportKmp)
+            implementation(projects.shared.etlTransportKmp)
         }
 
     }

@@ -7,7 +7,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
 
     implementation(projects.shared.etlCommonModels)
-    implementation(projects.shared.transportKmp)
+    implementation(projects.shared.etlTransportKmp)
 
     implementation(projects.backend.etlExcelService)
 

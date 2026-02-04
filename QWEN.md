@@ -1,81 +1,87 @@
 # QWEN.md
 
-This tool is designed to help with Extract, Transform, and Load processes.
+## Status
+- Type: System Specification
+- Scope: Global
+- Priority: P0
 
-This file defines **system-level rules** for all LLM agents operating on this repository.
-It is read before any task execution and overrides default agent behavior.
-
-## Rules and conventions
-
-- !!!NECESSARILY!!! First of all, always read the documentation, if there is one. 
-- Before completing a task, first of all, be sure to read the documentation for the module you plan to work with.
-- First of all, check the modules and files according to the documentation, only if you do not find any data in it, you can scan the project.
+## Purpose
+Define mandatory system-level rules for all LLM agents operating in this repository.
+Ensure documentation-first behavior, architectural stability, and token-efficient reuse.
 
 ---
 
-## Purpose of This File
+## Rule Priority Levels
 
-The purpose of this file is to ensure that:
-- Documentation is treated as the primary source of truth
-- Agents do not rediscover or re-analyze repository structure unnecessarily
-- Architectural knowledge is stable, reusable, and token-efficient
+- P0 — Architectural & Documentation Contracts (must never be violated)
+- P1 — Agent Behavior Constraints
+- P2 — Efficiency & Token Optimization
+- P3 — Style & Conventions
 
----
-
-## Documentation-First Rule
-
-This project follows a **documentation-first approach**.
-
-- Documentation describes the intended architecture and contracts.
-- Code is an implementation of documented decisions.
-- If documentation and code appear to differ:
-    - Prefer documentation
-    - Flag discrepancies explicitly
-    - Do NOT silently infer missing structure from the codebase
+In case of conflict, higher priority rules override lower ones.
 
 ---
 
-## Authoritative Sources
+## Core Contract: Documentation-First (P0)
 
-Agents MUST rely on the following sources in order of priority:
+### Rule 1
+Before performing ANY task, an agent MUST:
+1. Read all relevant documentation
+2. Treat documentation as the primary source of truth
+3. Avoid inferring structure from the repository tree
 
-1. Module-level README.md files
-2. Module documentation indexes (MODEL_INDEX.md, COMPONENT_INDEX.md)
+### Rule 2
+If documentation and code differ:
+- Prefer documentation
+- Explicitly flag the discrepancy
+- MUST NOT silently infer missing structure from code
+
+---
+
+## Authoritative Sources (P0)
+
+Agents MUST rely on the following sources in strict order:
+
+1. Module-level README.md
+2. MODEL_INDEX.md / COMPONENT_INDEX.md
 3. Component-specific documentation
 4. ADRs and architecture documents
 5. Explicit user instructions
 
-If information is not present in these sources, the agent MUST ask for clarification.
+If required information is missing, the agent MUST request clarification.
 
 ---
 
-## Repository Scanning Policy
+## Repository Scanning Policy (P1)
 
 By default, agents MUST NOT:
-
 - Scan or walk the repository tree
-- Enumerate folders and files
-- Rediscover module structure
-- Infer architecture from physical layout
+- Enumerate files or folders
+- Reconstruct architecture from layout
 
-Repository scanning is allowed ONLY if:
+Scanning is allowed ONLY if one of the following is true:
 - The user explicitly requests it
-- Documentation for the relevant module does not exist
+- Relevant documentation does not exist
+- Documentation is internally contradictory or incomplete
 - The task explicitly requires code inspection
+
+If scanning is used:
+- The reason MUST be stated explicitly
+- Findings MUST be reconciled back into documentation
 
 ---
 
-## Documentation Structure Contract
+## Documentation Structure Contract (P0)
 
-All module documentation MUST follow this structure:
-
-### Level 1 — Module README
+### Level 1 — Module README (mandatory)
+Must include:
 - Module name
 - LLM Usage Contract
-- Root package / namespace (defined once)
 - Module purpose
+- Root package / namespace (defined exactly once)
 - High-level semantic component index
 - Usage rules and invariants
+- Explicit non-goals (if applicable)
 
 ### Level 2 — Index Documentation
 - MODEL_INDEX.md or COMPONENT_INDEX.md
@@ -89,96 +95,49 @@ All module documentation MUST follow this structure:
 - Non-goals and boundaries
 - Key invariants
 
-Agents MUST NOT collapse all levels into a single file for large modules.
+Agents MUST NOT collapse all levels into a single document.
 
 ---
 
-## Agent Responsibilities Overview
-
-Different agents have specialized roles (e.g. administrator, coder, architect).
-
-All agents MUST:
-- Respect documentation contracts
-- Update documentation when public behavior changes
-- Avoid introducing undocumented structure
-
-The `administrator` agent is responsible for enforcing documentation consistency.
-
----
-
-## When to Ask Questions
-
-Agents MUST ask questions if:
-- A required concept is missing from documentation
-- Responsibilities are unclear or contradictory
-- A change would break an existing documented contract
-
-Agents MUST NOT guess or invent structure.
-
----
-
-## What NOT to Do
+## Prohibited Agent Behavior (P0)
 
 Agents MUST NOT:
-- Treat the repository tree as the source of truth
-- Reconstruct architecture from folders
-- Duplicate root packages across documents
-- Generate verbose, redundant documentation
-- Explain or restate these rules in task output
+- Treat repository layout as source of truth
+- Invent undocumented components or layers
+- Assume industry conventions unless documented
+- Duplicate root package definitions
+- Generate verbose or redundant documentation
+- Explain or restate system rules in task output
 
 ---
 
-End of system instructions.
+## Conflict Resolution & Fallback (P0)
 
-## Coding Conventions
+If rules conflict:
+1. Follow the higher-priority rule
+2. Explicitly state the conflict
+3. Request clarification if P0 or P1 is affected
+
+---
+
+## Coding & Project Conventions (P3)
 
 - Use value classes for simple fields
 - Use data classes for business models
-- Separate business objects, requests, and responses into individual data classes
-- Follow Kotest with Should Spec test style for testing
+- Separate business objects, requests, and responses
+- Use Kotest with Should Spec style
+- Dependencies are managed via `libs.versions.toml`
 
-## Dependencies
+---
 
-Dependencies are managed through Gradle and defined in `libs.versions.toml`.
+## Documentation Entry Points (P1)
 
-## Contributing
+Agents MUST start from module-level README files located at:
 
-Follow the clean architecture principles and maintain consistent coding standards.
+`docs/<scope>/<module-name>/README.md`
 
-## Project settings
+Agents MUST NOT attempt to discover documentation by scanning the repository tree.
 
-- The plugins section uses `alias` from [libs.versions.toml](/gradle/libs.versions.toml)
+---
 
-## Documentation Entry Points
-
-All project documentation is discoverable through the following entry points.
-
-Agents MUST start from these documents and MUST NOT attempt to locate
-documentation by scanning the repository tree.
-
-### Module Documentation
-
-Each module exposes documentation through a module-level README.
-
-Module documentation is located at:
-
-- `docs/<scope>/<module-name>/README.md`
-
-Examples:
-- `backend/etl-transport-kmp/README.md`
-- `backend/etl-polynom-bff/README.md`
-- `frontend/web-app/README.md`
-
-Each module README defines:
-- module purpose
-- root package / namespace
-- semantic component index
-- links to module-specific indexes and component docs
-
-## Agents
-
-Use agents to work with
-
-- `analyst` - The Task planning analyst
-- `kotlin-developer` - The main developer of Kotlin
-- `administrator` - The responsible for keeping documentation up-to-date
+End of system specification.

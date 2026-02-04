@@ -12,17 +12,19 @@ import web.cssom.*
 val App = FC<Props> {
 
     val viewModel = useMemo { WorkbookViewModel() }
-    val storageDefinitionsViewModel = useMemo { StorageDefinitionsViewModel() }
+    val authorizationViewModel = useMemo { AuthorizationViewModel() }
 
     val uiState = useCollectState(viewModel.state)
-    val storageDefinitionsState = useCollectState(storageDefinitionsViewModel.state)
+    val authState = useCollectState(authorizationViewModel.authState)
+    val storageState = useCollectState(authorizationViewModel.storageState)
 
     @Suppress("UNUSED_LAMBDA_EXPRESSION")
     useEffectOnce {
+        authorizationViewModel.loadStorageDefinitions()
         ;
         {
             viewModel.cleanup()
-            storageDefinitionsViewModel.cleanup()
+            authorizationViewModel.cleanup()
             ApiClient.close()
         }
     }
@@ -52,14 +54,6 @@ val App = FC<Props> {
             disabled = uiState is WorkbookUiState.Loading
             sx { marginBottom = 2.rem }
             +"Загрузить демо-файл"
-        }
-
-        Button {
-            variant = ButtonVariant.outlined
-            onClick = { storageDefinitionsViewModel.loadStorageDefinitions() }
-            disabled = storageDefinitionsState is StorageDefinitionsUiState.Loading
-            sx { marginBottom = 2.rem }
-            +"Загрузить Storage Definitions"
         }
 
         when (val state = uiState) {
@@ -96,40 +90,63 @@ val App = FC<Props> {
             }
         }
 
-        // Storage Definitions Section
+        // Authorization Section
         Box {
             sx { marginTop = 4.rem }
 
-            when (val state = storageDefinitionsState) {
-                is StorageDefinitionsUiState.Initial -> {
-                    Typography {
-                        sx { color = Color("text.secondary") }
-                        +"Нажмите кнопку для загрузки Storage Definitions"
-                    }
-                }
-
-                is StorageDefinitionsUiState.Loading -> {
+            when (val storage = storageState) {
+                is StorageLoadingState.Loading -> {
                     Box {
                         sx {
                             display = Display.flex
                             alignItems = AlignItems.center
                             gap = 2.rem
+                            justifyContent = JustifyContent.center
                         }
                         CircularProgress()
-                        Typography { +"Загрузка Storage Definitions..." }
+                        Typography { +"Загрузка списка хранилищ..." }
                     }
                 }
 
-                is StorageDefinitionsUiState.Error -> {
+                is StorageLoadingState.Error -> {
                     Alert {
                         severity = AlertColor.error.toString()
-                        +"Ошибка: ${state.message}"
+                        +"Ошибка загрузки хранилищ: ${storage.message}"
                     }
                 }
 
-                is StorageDefinitionsUiState.Success -> {
-                    StorageDefinitionsDisplay {
-                        storageDefinitions = state.storageDefinitions
+                is StorageLoadingState.Success -> {
+                    AuthorizationForm {
+                        storageOptions = storage.storageDefinitions
+                        loading = authState is AuthorizationUiState.Loading
+                        error = when (val state = authState) {
+                            is AuthorizationUiState.Error -> state.message
+                            else -> null
+                        }
+                        onSubmit = { username, password, storageId ->
+                            authorizationViewModel.submitAuthorization(username, password, storageId)
+                        }
+                    }
+
+                    // Show success message if authorized
+                    if (authState is AuthorizationUiState.Success) {
+                        Box {
+                            sx { marginTop = 2.rem }
+                            Alert {
+                                severity = AlertColor.success.toString()
+                                +(authState as AuthorizationUiState.Success).message
+                            }
+                        }
+                    }
+                }
+
+                is StorageLoadingState.Initial -> {
+                    Box {
+                        sx {
+                            display = Display.flex
+                            justifyContent = JustifyContent.center
+                        }
+                        CircularProgress()
                     }
                 }
             }

@@ -1,5 +1,6 @@
 package com.khan366kos.frontend.kotlin.react.app
 
+import com.khan366kos.etl.assistant.transport.models.AuthorizationRequestTransport
 import com.khan366kos.etl.assistant.transport.models.EtlWorkbookTransport
 import com.khan366kos.etl.assistant.transport.models.StorageDefinitionTransport
 import io.ktor.client.*
@@ -39,6 +40,14 @@ object ApiClient {
 
     suspend fun fetchStorageDefinitions(): List<StorageDefinitionTransport> {
         return httpClient.get("$baseUrl/storage-definitions").body()
+    }
+
+    suspend fun authorize(request: AuthorizationRequestTransport): String {
+        val response: Map<String, String> = httpClient.post("$baseUrl/authorize") {
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }.body()
+        return response["message"] ?: "Успешно"
     }
 
     suspend fun uploadFile(file: BrowserFile): EtlWorkbookTransport {

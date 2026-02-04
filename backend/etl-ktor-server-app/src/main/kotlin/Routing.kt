@@ -1,5 +1,6 @@
 package com.khan366kos.etl.ktor.server.app
 
+import com.khan366kos.etl.assistant.transport.models.AuthorizationRequestTransport
 import com.khan366kos.etl.excel.service.ManagedWorkbookResult
 import com.khan366kos.etl.excel.service.dsl.function.useManagedWorkbook
 import com.khan366kos.etl.mapper.toEtlWorkbookTransport
@@ -36,6 +37,30 @@ fun Application.configureRouting() {
                 call.respond(
                     HttpStatusCode.InternalServerError,
                     mapOf("error" to "Ошибка получения storage definitions: ${e.message}")
+                )
+            }
+        }
+
+        post("/authorize") {
+            try {
+                val authRequest = call.receive<AuthorizationRequestTransport>()
+
+                // Log the received authorization data
+                application.log.info("=== Authorization Request Received ===")
+                application.log.info("Username: ${authRequest.username}")
+                application.log.info("Password: ${authRequest.password}")
+                application.log.info("Storage ID: ${authRequest.storageId}")
+                application.log.info("======================================")
+
+                call.respond(
+                    HttpStatusCode.OK,
+                    mapOf("message" to "Авторизация успешна", "storageId" to authRequest.storageId)
+                )
+            } catch (e: Exception) {
+                application.log.error("Authorization error: ${e.message}", e)
+                call.respond(
+                    HttpStatusCode.InternalServerError,
+                    mapOf("error" to "Ошибка авторизации: ${e.message}")
                 )
             }
         }

@@ -5,6 +5,8 @@ import com.khan366kos.etl.assistant.transport.models.StorageDefinitionTransport
 import com.khan366kos.etl.assistant.transport.models.UserTransport
 import com.khan366kos.etl.polynom.bff.auth.AuthPlugin
 import com.khan366kos.etl.polynom.bff.auth.TokenManager
+import com.khan366kos.common.models.business.Reference
+import com.khan366kos.etl.mapper.toReference
 import com.khan366kos.common.models.business.ObjectInfo
 import com.khan366kos.common.models.simple.GroupId
 import com.khan366kos.common.responses.ElementResponse
@@ -81,8 +83,10 @@ class PolynomClient {
 
     suspend fun currentUserInfo(): UserTransport = client.get("login/current-user-info").body()
 
-    suspend fun getAll(): List<ReferenceTransport> {
-        return client.post("reference/get-all").body()
+    suspend fun getReference(): List<Reference> {
+        return client.post("reference/get-all")
+            .body<List<ReferenceTransport>>()
+            .map { it.toReference() }
     }
 
     suspend fun getByReference(request: IdentifiableObjectTransport): Array<ElementCatalogTransport> =

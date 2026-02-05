@@ -7,7 +7,7 @@ RootComponent is the root Decompose component that manages the navigation hierar
 ## Intended usage
 
 - Created once by App component with DefaultComponentContext
-- Manages navigation between Auth and Workbook screens via ChildStack
+- Manages navigation between Auth, ReferenceList, and Workbook screens via ChildStack
 - Provides global dependencies (ApiClient) to child components through constructors
 - Exposes childStack as Value<ChildStack<Config, Child>> for React to observe
 
@@ -18,6 +18,7 @@ RootComponent is the root Decompose component that manages the navigation hierar
 sealed interface Config {
     @Serializable data object Auth : Config
     @Serializable data object Workbook : Config
+    @Serializable data object ReferenceList : Config
 }
 ```
 
@@ -26,6 +27,7 @@ sealed interface Config {
 sealed interface Child {
     data class Auth(val component: AuthComponent) : Child
     data class Workbook(val component: WorkbookComponent) : Child
+    data class ReferenceList(val component: ReferenceListComponent) : Child
 }
 ```
 
@@ -34,13 +36,14 @@ sealed interface Child {
 
 ### Private Methods
 - `createChild(config, context)` - Factory method creating screen components based on Config
-- `onAuthSuccess()` - Navigation callback that pushes Workbook screen to stack
+- `onAuthSuccess()` - Navigation callback that pushes ReferenceList screen to stack
 
 ## Component Creation
 
 When creating child components:
 - **AuthComponent**: Receives ApiClient and onAuthSuccess callback
 - **WorkbookComponent**: Receives ApiClient for dependency injection
+- **ReferenceListComponent**: Receives ApiClient for dependency injection
 
 ## Non-goals and boundaries
 
@@ -54,4 +57,4 @@ When creating child components:
 - Global dependencies are passed through child component constructors (Dependency Injection)
 - Automatically handles back button navigation
 - Initial screen is always Auth
-- Navigation to Workbook happens only after successful authentication
+- Navigation to ReferenceList happens only after successful authentication

@@ -17,8 +17,6 @@ val App = FC<Props> {
         RootComponent(DefaultComponentContext(LifecycleRegistry()))
     }
 
-    val childStack = rootComponent.childStack
-
     @Suppress("UNUSED_LAMBDA_EXPRESSION")
     useEffectOnce {
         ;
@@ -39,11 +37,16 @@ val App = FC<Props> {
             +"ETL Assistant"
         }
 
-        when (val child = childStack.value.active.instance) {
+        val childStack = useValue(rootComponent.childStack)
+
+        when (val child = childStack.active.instance) {
             is RootComponent.Child.Auth -> AuthScreen {
                 component = child.component
             }
             is RootComponent.Child.Workbook -> WorkbookScreen {
+                component = child.component
+            }
+            is RootComponent.Child.ReferenceList -> ReferenceListScreen {
                 component = child.component
             }
         }

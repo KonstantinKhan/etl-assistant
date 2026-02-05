@@ -1,5 +1,6 @@
 package com.khan366kos.frontend.kotlin.react.app
 
+import com.arkivanov.decompose.value.Value
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.StateFlow
@@ -24,6 +25,22 @@ fun <T> useCollectState(flow: StateFlow<T>): T {
         {
             job.cancel()
             scope.cancel()
+        }
+    }
+
+    return state
+}
+
+@Suppress("UNUSED_LAMBDA_EXPRESSION")
+fun <T : Any> useValue(value: Value<T>): T {
+    val (state, setState) = useState(value.value)
+
+    useEffect(value) {
+        val observer: (T) -> Unit = { newValue -> setState(newValue) }
+        value.subscribe(observer)
+        ;
+        {
+            // Decompose Value cleanup is handled automatically
         }
     }
 

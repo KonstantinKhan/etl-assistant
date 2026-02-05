@@ -2,7 +2,7 @@
 
 ## Responsibility
 
-The ApiClient.kt file implements a singleton object responsible for all HTTP communication between the frontend application and the backend API. It handles requests for uploading files, fetching workbook data, retrieving storage definitions, and performing user authorization.
+The ApiClient.kt file implements a singleton object responsible for all HTTP communication between the frontend application and the backend API. It handles requests for uploading files, fetching workbook data, retrieving storage definitions, fetching references, and performing user authorization.
 
 ## Intended usage
 
@@ -23,3 +23,8 @@ The ApiClient should be used as the central communication layer for all backend 
 - The client uses JSON serialization for request/response bodies
 - The client properly closes the underlying HTTP client when no longer needed via the close() method
 - File uploads are handled using multipart form data
+
+## API Methods
+
+### `fetchReferences(): List<Reference>`
+Fetches the list of references from the backend. Returns domain models (Reference) rather than transport models, as the BFF layer handles the mapping from transport to domain models.

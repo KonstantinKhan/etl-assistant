@@ -37,11 +37,17 @@ class RootComponent(
                     apiClient = ApiClient
                 )
             )
+            is Config.ReferenceList -> Child.ReferenceList(
+                component = ReferenceListComponent(
+                    componentContext = context,
+                    apiClient = ApiClient
+                )
+            )
         }
     }
 
     private fun onAuthSuccess() {
-        navigation.push(Config.Workbook)
+        navigation.push(Config.ReferenceList)
     }
 
     @Serializable
@@ -51,10 +57,14 @@ class RootComponent(
 
         @Serializable
         data object Workbook : Config
+
+        @Serializable
+        data object ReferenceList : Config
     }
 
     sealed interface Child {
         data class Auth(val component: AuthComponent) : Child
         data class Workbook(val component: WorkbookComponent) : Child
+        data class ReferenceList(val component: ReferenceListComponent) : Child
     }
 }

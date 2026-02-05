@@ -4,6 +4,15 @@ This document provides brief descriptions of each domain model in the etl-common
 
 ## Business Models
 
+### [Reference](Reference.md)
+Represents a reference object with metadata, hierarchical information, and catalog associations.
+
+### [DocumentCatalog](DocumentCatalog.md)
+Represents a document catalog with metadata and hierarchical path information.
+
+### [ViewpointCatalog](ViewpointCatalog.md)
+Represents a viewpoint catalog with metadata and optional reference association.
+
 ### [Identifier](Identifier.md)
 Combines ObjectId and TypeId to uniquely identify domain objects in the system.
 
@@ -20,6 +29,15 @@ Represents ownership groups for access control.
 Represents elements contained within other elements.
 
 ## Simple Types
+
+### [ReferenceId](ReferenceId.md)
+Unique identifier for references (wrapper around String), providing type safety.
+
+### [Description](Description.md)
+Textual description for domain objects (wrapper around String), providing type safety and semantic meaning.
+
+### [WriteAccess](WriteAccess.md)
+Write permission indicator (wrapper around Boolean), providing type safety for access control flags.
 
 ### [ObjectId](ObjectId.md)
 Unique identifier for objects (wrapper around Int), providing type safety.

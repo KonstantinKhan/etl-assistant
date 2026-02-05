@@ -21,3 +21,18 @@ AuthConfig should be used to configure the authentication system with necessary 
 - It provides default values for optional parameters
 - It validates configuration parameters during initialization
 - It maintains separation between configuration and implementation logic
+
+## Environment Variables
+
+The following environment variables are **required**:
+
+- `LOGIN` - Username for Polynom API authentication
+- `PASSWORD` - Password for Polynom API authentication
+
+The application will fail at startup if these variables are not set.
+
+### Example
+```bash
+export LOGIN="your-username"
+export PASSWORD="your-password"
+```

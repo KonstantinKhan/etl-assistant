@@ -1,5 +1,6 @@
 package com.khan366kos.frontend.kotlin.react.app
 
+import com.khan366kos.common.models.business.Reference
 import com.khan366kos.etl.assistant.transport.models.AuthorizationRequestTransport
 import com.khan366kos.etl.assistant.transport.models.EtlWorkbookTransport
 import com.khan366kos.etl.assistant.transport.models.StorageDefinitionTransport
@@ -48,6 +49,10 @@ object ApiClient {
             setBody(request)
         }.body()
         return response["message"] ?: "Успешно"
+    }
+
+    suspend fun fetchReferences(): List<Reference> {
+        return httpClient.get("$baseUrl/references").body()
     }
 
     suspend fun uploadFile(file: BrowserFile): EtlWorkbookTransport {

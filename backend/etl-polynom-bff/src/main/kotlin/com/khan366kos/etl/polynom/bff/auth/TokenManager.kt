@@ -7,9 +7,11 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import org.slf4j.LoggerFactory
 import java.util.concurrent.atomic.AtomicReference
 
 class TokenManager {
+    private val logger = LoggerFactory.getLogger(TokenManager::class.java)
     private val tokenData = AtomicReference<TokenData?>(null)
     private val authMutex = Mutex()
 
@@ -43,18 +45,34 @@ class TokenManager {
     }
 
     private suspend fun performAuthentication(httpClient: HttpClient, baseUrl: String) {
-        val loginRequest = LoginRequest(
-            storageId = AuthConfig.STORAGE_ID,
-            login = AuthConfig.login,
-            password = AuthConfig.password
-        )
+        try {
+            val loginRequest = LoginRequest(
+                storageId = AuthConfig.STORAGE_ID,
+                login = AuthConfig.login,
+                password = AuthConfig.password
+            )
 
-        val response: LoginResponse = httpClient.post("$baseUrl${AuthConfig.LOGIN_ENDPOINT}") {
-            contentType(ContentType.Application.Json)
-            setBody(loginRequest)
-        }.body()
+            logger.debug("Authenticating with Polynom API at {}", "$baseUrl${AuthConfig.LOGIN_ENDPOINT}")
 
-        val expiresAt = System.currentTimeMillis() + (response.expiresIn * 1000L)
-        tokenData.set(TokenData(response.accessToken, response.refreshToken, expiresAt))
+            val httpResponse = httpClient.post("$baseUrl${AuthConfig.LOGIN_ENDPOINT}") {
+                contentType(ContentType.Application.Json)
+                setBody(loginRequest)
+            }
+
+            if (httpResponse.status.value != 200) {
+                val responseBody = httpResponse.body<String>()
+                throw AuthenticationException("Authentication failed with status ${httpResponse.status}: $responseBody")
+            }
+
+            val response: LoginResponse = httpResponse.body()
+
+            val expiresAt = System.currentTimeMillis() + (response.expiresIn * 1000L)
+            tokenData.set(TokenData(response.accessToken, response.refreshToken, expiresAt))
+
+            logger.info("Authentication successful, token expires in {} seconds", response.expiresIn)
+        } catch (e: Exception) {
+            logger.error("Authentication failed: {}", e.message, e)
+            throw AuthenticationException("Failed to authenticate: ${e.message}")
+        }
     }
 }

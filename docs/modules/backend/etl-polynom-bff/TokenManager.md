@@ -21,3 +21,17 @@ TokenManager should be used to manage the lifecycle of authentication tokens, in
 - It implements efficient caching to minimize refresh operations
 - It handles token expiration and renewal automatically
 - It provides thread-safe access to tokens in concurrent environments
+
+## Logging
+
+TokenManager uses SLF4J for logging:
+
+- **DEBUG level**: Logs authentication attempts with URL (credentials are NOT logged)
+- **INFO level**: Logs successful authentication with token expiry time
+- **ERROR level**: Logs authentication failures with exception details
+
+### Example Log Output
+```
+INFO  TokenManager - Authentication successful, token expires in 3600 seconds
+ERROR TokenManager - Authentication failed: Connection refused
+```

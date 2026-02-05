@@ -6,8 +6,7 @@ object AuthConfig {
     const val REFRESH_THRESHOLD = 0.8
 
     val login: String = System.getenv("LOGIN")
-        ?: throw IllegalStateException("LOGIN environment variable not set")
-
+        ?: throw IllegalStateException("LOGIN environment variable is required")
     val password: String = System.getenv("PASSWORD")
-        ?: throw IllegalStateException("PASSWORD environment variable not set")
+        ?: throw IllegalStateException("PASSWORD environment variable is required")
 }

@@ -65,6 +65,24 @@ fun Application.configureRouting() {
             }
         }
 
+        get("/references") {
+            try {
+                val polynomClient = createSimpleBffClient()
+                try {
+                    val references = polynomClient.getReference()
+                    call.respond(HttpStatusCode.OK, references)
+                } finally {
+                    polynomClient.close()
+                }
+            } catch (e: Exception) {
+                application.log.error("Error fetching references: ${e.message}", e)
+                call.respond(
+                    HttpStatusCode.InternalServerError,
+                    mapOf("error" to "Ошибка получения справочников: ${e.message}")
+                )
+            }
+        }
+
         post("/upload") {
             val multipartData = call.receiveMultipart()
             var fileName: String? = null

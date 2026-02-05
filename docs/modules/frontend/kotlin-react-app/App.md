@@ -8,15 +8,16 @@ App is the main React component that serves as the root of the React component t
 
 - Top-level React component rendered by Main.kt
 - Creates RootComponent once using useMemo with DefaultComponentContext
-- Subscribes to RootComponent.childStack using useCollectState
-- Renders active child screen (AuthScreen or WorkbookScreen) based on navigation
+- Subscribes to RootComponent.childStack using useValue hook
+- Renders active child screen (AuthScreen, ReferenceListScreen, or WorkbookScreen) based on navigation
 - Provides application title and container layout
 
 ## Rendering behavior
 
 - Creates RootComponent once on mount (via useMemo)
-- Observes childStack.active.instance to determine which screen to render
+- Observes childStack.active.instance using useValue to determine which screen to render
 - Renders AuthScreen when active child is RootComponent.Child.Auth
+- Renders ReferenceListScreen when active child is RootComponent.Child.ReferenceList
 - Renders WorkbookScreen when active child is RootComponent.Child.Workbook
 - Passes the corresponding Decompose component to screen via props
 
@@ -28,6 +29,7 @@ Container {
 
     when (val child = childStack.active.instance) {
         is RootComponent.Child.Auth -> AuthScreen { component = child.component }
+        is RootComponent.Child.ReferenceList -> ReferenceListScreen { component = child.component }
         is RootComponent.Child.Workbook -> WorkbookScreen { component = child.component }
     }
 }
@@ -44,6 +46,6 @@ Container {
 
 - RootComponent is created only once using useMemo
 - Cleanup of ApiClient happens on component unmount
-- Navigation state is observed reactively via useCollectState
+- Navigation state is observed reactively via useValue hook
 - Screen components always receive Decompose components via props
 - Uses Material UI components for consistent styling and layout

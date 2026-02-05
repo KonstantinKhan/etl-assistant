@@ -41,8 +41,9 @@ kotlin {
             implementation(libs.decompose)
             implementation(libs.decompose.lifecycle.coroutines)
 
-            // Shared models for transport
+            // Shared models
             implementation(projects.shared.etlTransportKmp)
+            implementation(projects.shared.etlCommonModels)
         }
 
     }

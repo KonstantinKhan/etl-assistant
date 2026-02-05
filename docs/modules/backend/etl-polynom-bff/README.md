@@ -29,6 +29,15 @@ The `etl-polynom-bff` module serves as a Backend-for-Frontend (BFF) layer that p
 - `TokenManager` - Token lifecycle management (refresh, cache)
 - `AuthConfig` - Configuration properties for the authentication subsystem
 
+## Configuration
+
+### Required Environment Variables
+
+- `LOGIN` - Polynom API username
+- `PASSWORD` - Polynom API password
+
+See [AuthConfig.md](AuthConfig.md) for details.
+
 ## Usage rules and invariants
 
 - The module follows the Backend-for-Frontend pattern to provide a tailored API for frontend needs

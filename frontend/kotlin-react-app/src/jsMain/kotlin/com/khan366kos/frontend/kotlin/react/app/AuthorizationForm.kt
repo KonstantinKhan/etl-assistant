@@ -91,34 +91,64 @@ val AuthorizationForm = FC<AuthorizationFormProps> { props ->
                 +"Хранилище"
             }
 
-            Select {
-                label = ReactNode("Хранилище")
-                value = storageId
-                disabled = props.storageLoading || props.loading
+            Box {
+                sx {
+                    position = Position.relative
+                }
 
-                onChange = { event, _ ->
-                    storageId = event.target.asDynamic().value as String
+                Select {
+                    label = ReactNode("Хранилище")
+                    value = storageId
+                    disabled = props.storageLoading || props.loading
+                    fullWidth = true
+
+                    onChange = { event, _ ->
+                        storageId = event.target.asDynamic().value as String
+                    }
+
+                    if (props.storageLoading) {
+                        MenuItem {
+                            value = ""
+                            disabled = true
+                            +"Загрузка..."
+                        }
+                    } else if (props.storageOptions.isEmpty()) {
+                        MenuItem {
+                            value = ""
+                            disabled = true
+                            +"Нет доступных хранилищ"
+                        }
+                    } else {
+                        props.storageOptions.forEach { storage ->
+                            MenuItem {
+                                value = storage.storageId
+                                +(storage.displayName ?: storage.storageId)
+                            }
+                        }
+                    }
                 }
 
                 if (props.storageLoading) {
-                    MenuItem {
-                        value = ""
-                        disabled = true
-                        +"Загрузка хранилищ..."
-                    }
-                } else if (props.storageOptions.isEmpty()) {
-                    MenuItem {
-                        value = ""
-                        disabled = true
-                        +"Нет доступных хранилищ"
-                    }
-                } else {
-                    props.storageOptions.forEach { storage ->
-                        MenuItem {
-                            value = storage.storageId
-                            +(storage.displayName ?: storage.storageId)
+                    Box {
+                        sx {
+                            position = Position.absolute
+                            right = 40.px
+                            top = 50.pct
+                            transform = translate(0.pct, (-50).pct)
+                            display = Display.flex
+                            alignItems = AlignItems.center
+                        }
+
+                        CircularProgress {
+                            size = 20
                         }
                     }
+                }
+            }
+
+            if (props.storageLoading && props.storageError == null) {
+                FormHelperText {
+                    +"Загрузка доступных хранилищ..."
                 }
             }
 

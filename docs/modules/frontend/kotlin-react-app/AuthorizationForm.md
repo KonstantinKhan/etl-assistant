@@ -20,7 +20,9 @@ The AuthorizationForm component should be used in contexts where users need to a
 - The component uses Material UI components for consistent styling
 - It provides input fields for username and password
 - It includes a dropdown selector for choosing a storage option
-- It supports a loading state to disable interaction during processing
-- It can display error messages passed from parent components
+- It supports loading states to disable interaction during processing:
+  - Storage loading state: Shows CircularProgress spinner (20px) next to the Select field and helper text "Загрузка доступных хранилищ..." to indicate data is being fetched
+  - Form submission loading state: Shows CircularProgress spinner (24px) inside the submit button
+- It can display error messages passed from parent components via FormHelperText
 - It handles form submission via the onSubmit callback
 - It follows accessibility best practices for form elements

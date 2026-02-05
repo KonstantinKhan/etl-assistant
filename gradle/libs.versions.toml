@@ -13,11 +13,13 @@ hikaricp = "5.0.1"
 sqlite-jdbc = "3.42.0.0"
 flyway = "9.22.3"
 log4j-api = "2.25.3"
-kotlin-react = "2026.1.13-19.2.3"
-kotlin-react-dom = "2026.1.13-19.2.3"
+kotlin-react = "2026.2.3-19.2.4"
+kotlin-react-dom = "2026.2.3-19.2.4"
 kotlin-emotion = "2026.1.14-11.14.0"
-kotlin-mui-material = "2026.1.15-5.18.0"
+kotlin-mui-material = "2026.2.3-5.18.0"
 emotion-styled = "11.14.1"
+decompose = "3.4.0"
+essenty = "2.5.0"
 
 [libraries]
 ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
@@ -65,8 +67,10 @@ kotlin-react = { module = "org.jetbrains.kotlin-wrappers:kotlin-react", version.
 kotlin-react-dom = { module = "org.jetbrains.kotlin-wrappers:kotlin-react-dom", version.ref = "kotlin-react-dom" }
 kotlin-react-core = { module = "org.jetbrains.kotlin-wrappers:kotlin-react-core", version.ref = "kotlin-react" }
 kotlin-emotion-react = { module = "org.jetbrains.kotlin-wrappers:kotlin-emotion-react", version.ref = "kotlin-emotion" }
-kotlin-mui-material = { module = "org.jetbrains.kotlin-wrappers:kotlin-mui-material", version.ref = "kotlin-mui-material"}
+kotlin-mui-material = { module = "org.jetbrains.kotlin-wrappers:kotlin-mui-material", version.ref = "kotlin-mui-material" }
 
+decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
+decompose-lifecycle-coroutines = { module = "com.arkivanov.essenty:lifecycle-coroutines", version.ref = "essenty" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

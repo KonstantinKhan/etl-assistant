@@ -1,20 +1,24 @@
 # Component Index for kotlin-react-app
 
-## UI Components
-- `App` - Main application component that orchestrates UI state and manages the primary user workflow
-- `FileUpload` - Component for selecting and uploading Excel files to the backend
-- `SheetsDisplay` - Component that renders the sheets of an uploaded workbook
-- `SheetCard` - Individual card component representing a single sheet with its headers and metadata
-- `AuthorizationForm` - Form component for user authentication and storage selection
-- `Main` - Entry point of the application that mounts the React component to the DOM
+## Decompose Components (State Management & Navigation)
+- `RootComponent` - Root Decompose component managing navigation and global state
+- `AuthComponent` - Handles authentication flow and storage selection
+- `WorkbookComponent` - Manages workbook state and operations
 
-## API Communication Layer
-- `ApiClient` - Singleton object handling all HTTP communication with the backend API using Ktor HTTP client
+## React UI Components (Presentation Layer)
+- `App` - Main React component rendering active navigation child
+- `AuthScreen` - Renders authentication UI consuming AuthComponent
+- `WorkbookScreen` - Renders workbook UI consuming WorkbookComponent
+- `AuthorizationForm` - Form for user login and storage selection
+- `FileUpload` - File upload UI component
+- `SheetsDisplay` - Renders the sheets of an uploaded workbook
+- `SheetCard` - Individual card representing a single sheet
 
-## State Management Components (ViewModels)
-- `WorkbookViewModel` - Manages state related to workbook processing and file uploads
-- `AuthorizationViewModel` - Manages user authentication state and storage connection
-- `StorageDefinitionsViewModel` - Manages the list of available storage options
+## Core Application
+- `Main` - Entry point that mounts the React component to the DOM
+
+## API Communication
+- `ApiClient` - HTTP client for backend communication
 
 ## Utilities
-- `hooks` - Collection of custom React hooks for state management in functional components
+- `hooks` - React hooks (useCollectState for StateFlow integration)

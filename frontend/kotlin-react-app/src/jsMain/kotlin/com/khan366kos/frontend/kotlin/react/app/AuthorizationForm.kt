@@ -18,6 +18,8 @@ external interface AuthorizationFormProps : Props {
     var onSubmit: (username: String, password: String, storageId: String) -> Unit
     var loading: Boolean
     var error: String?
+    var storageLoading: Boolean
+    var storageError: String?
 }
 
 val AuthorizationForm = FC<AuthorizationFormProps> { props ->
@@ -90,18 +92,40 @@ val AuthorizationForm = FC<AuthorizationFormProps> { props ->
             }
 
             Select {
-                value = storageId.unsafeCast<Nothing?>()
                 label = ReactNode("Хранилище")
-                disabled = props.loading
+                value = storageId
+                disabled = props.storageLoading || props.loading
+
                 onChange = { event, _ ->
                     storageId = event.target.asDynamic().value as String
                 }
 
-                props.storageOptions.forEach { storage ->
+                if (props.storageLoading) {
                     MenuItem {
-                        value = storage.storageId
-                        +(storage.displayName ?: storage.storageId)
+                        value = ""
+                        disabled = true
+                        +"Загрузка хранилищ..."
                     }
+                } else if (props.storageOptions.isEmpty()) {
+                    MenuItem {
+                        value = ""
+                        disabled = true
+                        +"Нет доступных хранилищ"
+                    }
+                } else {
+                    props.storageOptions.forEach { storage ->
+                        MenuItem {
+                            value = storage.storageId
+                            +(storage.displayName ?: storage.storageId)
+                        }
+                    }
+                }
+            }
+
+            if (props.storageError != null) {
+                FormHelperText {
+                    error = true
+                    +props.storageError!!
                 }
             }
         }
@@ -109,7 +133,7 @@ val AuthorizationForm = FC<AuthorizationFormProps> { props ->
         Button {
             variant = ButtonVariant.contained
             fullWidth = true
-            disabled = !isFormValid || props.loading
+            disabled = !isFormValid || props.storageLoading || props.loading
             sx {
                 marginTop = 1.rem
                 padding = Padding(12.px, 24.px)

@@ -1,9 +1,11 @@
 package com.khan366kos.frontend.kotlin.react.app
 
+import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.khan366kos.etl.assistant.transport.models.AuthorizationRequestTransport
 import com.khan366kos.etl.assistant.transport.models.StorageDefinitionTransport
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -22,20 +24,29 @@ sealed interface StorageLoadingState {
     data class Error(val message: String) : StorageLoadingState
 }
 
-class AuthorizationViewModel {
+class AuthComponent(
+    componentContext: ComponentContext,
+    private val apiClient: ApiClient,
+    private val onAuthSuccess: () -> Unit
+) : ComponentContext by componentContext {
+
+    private val scope = coroutineScope(Dispatchers.Main + SupervisorJob())
+
     private val _authState = MutableStateFlow<AuthorizationUiState>(AuthorizationUiState.Initial)
     val authState: StateFlow<AuthorizationUiState> = _authState
 
     private val _storageState = MutableStateFlow<StorageLoadingState>(StorageLoadingState.Initial)
     val storageState: StateFlow<StorageLoadingState> = _storageState
 
-    private val viewModelScope = MainScope()
+    init {
+        loadStorageDefinitions()
+    }
 
     fun loadStorageDefinitions() {
-        viewModelScope.launch {
+        scope.launch {
             _storageState.value = StorageLoadingState.Loading
             try {
-                val definitions = ApiClient.fetchStorageDefinitions()
+                val definitions = apiClient.fetchStorageDefinitions()
                 _storageState.value = StorageLoadingState.Success(definitions)
             } catch (e: Exception) {
                 console.error("Failed to load storage definitions", e)
@@ -47,7 +58,7 @@ class AuthorizationViewModel {
     }
 
     fun submitAuthorization(username: String, password: String, storageId: String) {
-        viewModelScope.launch {
+        scope.launch {
             _authState.value = AuthorizationUiState.Loading
             try {
                 val request = AuthorizationRequestTransport(
@@ -55,8 +66,10 @@ class AuthorizationViewModel {
                     password = password,
                     storageId = storageId
                 )
-                val response = ApiClient.authorize(request)
+                val response = apiClient.authorize(request)
                 _authState.value = AuthorizationUiState.Success(response)
+                // Navigate to Workbook screen on success
+                onAuthSuccess()
             } catch (e: Exception) {
                 console.error("Authorization failed", e)
                 _authState.value = AuthorizationUiState.Error(
@@ -64,9 +77,5 @@ class AuthorizationViewModel {
                 )
             }
         }
-    }
-
-    fun cleanup() {
-        viewModelScope.cancel()
     }
 }
